@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../models/habit.dart';
-import '../../theme/app_colors.dart';
-import '../../widgets/animated_count.dart';
-import '../../widgets/progress_ring.dart';
+import '../../../data/models/habit.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../shared/widgets/animated_count.dart';
+import '../../../shared/widgets/progress_ring.dart';
 
 class HeroProgressCard extends StatelessWidget {
   const HeroProgressCard({

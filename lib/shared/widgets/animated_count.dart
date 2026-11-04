@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../core/animation_utils.dart';
+import '../../core/utils/animation_utils.dart';
 
 /// Número que conta suavemente até o novo valor.
 class AnimatedCount extends StatelessWidget {

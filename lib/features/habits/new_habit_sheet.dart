@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../models/habit.dart';
-import '../../theme/app_colors.dart';
+import '../../data/models/habit.dart';
+import '../../core/theme/app_colors.dart';
 
 /// Resultado do formulário "Novo hábito".
 typedef HabitDraft = ({String name, String category});

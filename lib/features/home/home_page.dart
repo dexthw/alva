@@ -1,23 +1,22 @@
 import 'dart:async';
-import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../core/animation_utils.dart';
-import '../data/habit_repository.dart';
-import '../data/motivation_phrases.dart';
-import '../models/habit.dart';
-import '../theme/app_colors.dart';
-import '../widgets/dot_grid.dart';
-import '../widgets/home/category_chips.dart';
-import '../widgets/home/habit_card.dart';
-import '../widgets/home/header.dart';
-import '../widgets/home/hero_progress_card.dart';
-import '../widgets/home/new_habit_sheet.dart';
-import '../widgets/home/period_selector.dart';
-import '../widgets/home/section_header.dart';
-import '../widgets/staggered_entry.dart';
+import '../../core/constants.dart';
+import '../../core/theme/app_colors.dart';
+import '../../core/utils/animation_utils.dart';
+import '../../data/models/habit.dart';
+import '../../shared/widgets/dot_grid.dart';
+import '../../shared/widgets/staggered_entry.dart';
+import '../habits/new_habit_sheet.dart';
+import '../habits/widgets/habit_card.dart';
+import 'home_controller.dart';
+import 'widgets/category_chips.dart';
+import 'widgets/header.dart';
+import 'widgets/hero_progress_card.dart';
+import 'widgets/period_selector.dart';
+import 'widgets/section_header.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,109 +26,23 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final HabitRepository _repository = HabitRepository();
-  final Map<int, int> _bursts = <int, int>{};
-
-  List<Habit> _habits = <Habit>[];
-  int _selectedCategory = 0;
-  Period _period = Period.week;
-  String _phrase = motivationPhrases.first;
-  bool _showAll = false;
-  bool _loaded = false;
-  int _nextId = 1;
-  Timer? _saveTimer;
+  final HomeController _controller = HomeController();
 
   @override
   void initState() {
     super.initState();
-    unawaited(_load());
+    unawaited(_controller.load());
   }
 
   @override
   void dispose() {
-    _saveTimer?.cancel();
-    _saveNow();
+    _controller.dispose();
     super.dispose();
-  }
-
-  Future<void> _load() async {
-    final HabitState state = await _repository.load();
-    if (!mounted) {
-      return;
-    }
-    setState(() {
-      _habits = state.habits;
-      _selectedCategory = state.selectedCategory;
-      _period = state.period;
-      _phrase = pickMotivationPhrase(last: state.lastPhrase);
-      _nextId = _habits.fold<int>(
-            0,
-            (int max, Habit habit) => math.max(max, habit.id),
-          ) +
-          1;
-      _loaded = true;
-    });
-    _scheduleSave();
-  }
-
-  List<Habit> get _filteredHabits {
-    if (_selectedCategory <= 0) {
-      return _habits;
-    }
-    final String category = habitCategories[_selectedCategory];
-    return _habits
-        .where((Habit habit) => habit.category == category)
-        .toList();
-  }
-
-  PeriodStats get _aggregateStats {
-    int completed = 0;
-    int expected = 0;
-    for (final Habit habit in _habits) {
-      final PeriodStats stats = habit.stats(_period);
-      completed += stats.completed;
-      expected += stats.expected;
-    }
-    return PeriodStats(completed: completed, expected: expected);
   }
 
   void _toggleHabit(Habit habit) {
     HapticFeedback.lightImpact();
-    setState(() {
-      final bool completed = habit.toggleOn(DateTime.now());
-      if (completed) {
-        _bursts[habit.id] = (_bursts[habit.id] ?? 0) + 1;
-      }
-    });
-    _scheduleSave();
-  }
-
-  void _toggleCollapsed(Habit habit) {
-    setState(() => habit.daysCollapsed = !habit.daysCollapsed);
-    _scheduleSave();
-  }
-
-  void _selectCategory(int index) {
-    if (index == _selectedCategory) {
-      return;
-    }
-    setState(() {
-      _selectedCategory = index;
-      _showAll = false;
-    });
-    _scheduleSave();
-  }
-
-  void _selectPeriod(Period period) {
-    if (period == _period) {
-      return;
-    }
-    setState(() => _period = period);
-    _scheduleSave();
-  }
-
-  void _toggleShowAll() {
-    setState(() => _showAll = !_showAll);
+    _controller.toggleHabit(habit);
   }
 
   Future<void> _openNewHabitSheet() async {
@@ -145,38 +58,7 @@ class _HomePageState extends State<HomePage> {
       return;
     }
 
-    setState(() {
-      _habits.add(
-        Habit(id: _nextId++, name: draft.name, category: draft.category),
-      );
-      _selectedCategory = 0;
-      _showAll = false;
-    });
-    _scheduleSave();
-  }
-
-  void _scheduleSave() {
-    if (!_loaded) {
-      return;
-    }
-    _saveTimer?.cancel();
-    _saveTimer = Timer(const Duration(milliseconds: 250), _saveNow);
-  }
-
-  void _saveNow() {
-    if (!_loaded) {
-      return;
-    }
-    unawaited(
-      _repository.save(
-        HabitState(
-          habits: _habits,
-          selectedCategory: _selectedCategory,
-          period: _period,
-          lastPhrase: _phrase,
-        ),
-      ),
-    );
+    _controller.addHabit(name: draft.name, category: draft.category);
   }
 
   void _showFilterHint() {
@@ -211,10 +93,10 @@ class _HomePageState extends State<HomePage> {
               index: i,
               child: HabitCard(
                 habit: habit,
-                period: _period,
-                burstToken: _bursts[habit.id] ?? 0,
+                period: _controller.period,
+                burstToken: _controller.burstFor(habit.id),
                 onToggle: () => _toggleHabit(habit),
-                onToggleCollapsed: () => _toggleCollapsed(habit),
+                onToggleCollapsed: () => _controller.toggleCollapsed(habit),
               ),
             ),
           ),
@@ -223,7 +105,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     return AnimatedSize(
-      duration: context.motion(const Duration(milliseconds: 260)),
+      duration: context.motion(AppDurations.listTransition),
       curve: Curves.easeOutCubic,
       alignment: Alignment.topCenter,
       child: AnimatedSwitcher(
@@ -236,7 +118,8 @@ class _HomePageState extends State<HomePage> {
         ),
         child: Column(
           key: ValueKey<String>(
-            '$_selectedCategory-$_period-$_showAll-${_habits.length}',
+            '${_controller.selectedCategory}-${_controller.period}-'
+            '${_controller.showAll}-${_controller.habits.length}',
           ),
           children: children,
         ),
@@ -246,85 +129,116 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Habit> filtered = _filteredHabits;
-    final List<Habit> visible = _showAll
-        ? filtered
-        : filtered.take(3).toList();
+    return ListenableBuilder(
+      listenable: _controller,
+      builder: (BuildContext context, Widget? child) {
+        final List<Habit> filtered = _controller.filteredHabits;
+        final List<Habit> visible = _controller.visibleHabits;
 
-    return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          const Positioned.fill(
-            child: IgnorePointer(child: CustomPaint(painter: DotGridPainter())),
+        return Scaffold(
+          body: Stack(
+            children: <Widget>[
+              const Positioned.fill(
+                child: IgnorePointer(
+                  child: CustomPaint(painter: DotGridPainter()),
+                ),
+              ),
+              SafeArea(
+                bottom: false,
+                child: CustomScrollView(
+                  slivers: <Widget>[
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.page,
+                        AppSpacing.xl,
+                        AppSpacing.page,
+                        0,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: Header(
+                          phrase: _controller.phrase,
+                          onNewHabit: _openNewHabitSheet,
+                        ),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.page,
+                        AppSpacing.xl,
+                        AppSpacing.page,
+                        0,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: HeroProgressCard(
+                          stats: _controller.aggregateStats,
+                          period: _controller.period,
+                        ),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.page,
+                        AppSpacing.xxl,
+                        AppSpacing.page,
+                        0,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: PeriodSelector(
+                          value: _controller.period,
+                          onChanged: _controller.selectPeriod,
+                        ),
+                      ),
+                    ),
+                    const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                    SliverToBoxAdapter(
+                      child: CategoryChips(
+                        selectedIndex: _controller.selectedCategory,
+                        onSelected: _controller.selectCategory,
+                        onFilterTap: _showFilterHint,
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.page,
+                        AppSpacing.xxl,
+                        AppSpacing.page,
+                        0,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: SectionHeader(
+                          title: 'Meus hábitos',
+                          expanded: _controller.showAll,
+                          canExpand:
+                              filtered.length > AppSizes.visibleHabits,
+                          onToggle: _controller.toggleShowAll,
+                        ),
+                      ),
+                    ),
+                    SliverPadding(
+                      padding: const EdgeInsets.fromLTRB(
+                        AppSpacing.page,
+                        12,
+                        AppSpacing.page,
+                        0,
+                      ),
+                      sliver: SliverToBoxAdapter(
+                        child: _controller.loaded
+                            ? _buildHabitList(visible, filtered.isEmpty)
+                            : const SizedBox.shrink(),
+                      ),
+                    ),
+                    SliverToBoxAdapter(
+                      child: SizedBox(
+                        height: MediaQuery.paddingOf(context).bottom + 130,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
-          SafeArea(
-            bottom: false,
-            child: CustomScrollView(
-              slivers: <Widget>[
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
-                  sliver: SliverToBoxAdapter(
-                    child: Header(
-                      phrase: _phrase,
-                      onNewHabit: _openNewHabitSheet,
-                    ),
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
-                  sliver: SliverToBoxAdapter(
-                    child: HeroProgressCard(
-                      stats: _aggregateStats,
-                      period: _period,
-                    ),
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 22, 20, 0),
-                  sliver: SliverToBoxAdapter(
-                    child: PeriodSelector(
-                      value: _period,
-                      onChanged: _selectPeriod,
-                    ),
-                  ),
-                ),
-                const SliverToBoxAdapter(child: SizedBox(height: 20)),
-                SliverToBoxAdapter(
-                  child: CategoryChips(
-                    selectedIndex: _selectedCategory,
-                    onSelected: _selectCategory,
-                    onFilterTap: _showFilterHint,
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 22, 20, 0),
-                  sliver: SliverToBoxAdapter(
-                    child: SectionHeader(
-                      title: 'Meus hábitos',
-                      expanded: _showAll,
-                      canExpand: filtered.length > 3,
-                      onToggle: _toggleShowAll,
-                    ),
-                  ),
-                ),
-                SliverPadding(
-                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 0),
-                  sliver: SliverToBoxAdapter(
-                    child: _loaded
-                        ? _buildHabitList(visible, filtered.isEmpty)
-                        : const SizedBox.shrink(),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: MediaQuery.paddingOf(context).bottom + 130,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../theme/app_colors.dart';
-import '../widgets/dot_grid.dart';
+import '../../core/theme/app_colors.dart';
+import '../../shared/widgets/dot_grid.dart';
 
 /// Placeholder do formulário de feedback.
 const String feedbackFormUrl = 'https://forms.gle/yx9FLbC2Rets4Jzt7';

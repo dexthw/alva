@@ -2,8 +2,8 @@ import 'dart:ui' show ImageFilter;
 
 import 'package:flutter/material.dart';
 
-import '../../core/animation_utils.dart';
-import '../../theme/app_colors.dart';
+import '../../core/utils/animation_utils.dart';
+import '../../core/theme/app_colors.dart';
 
 class GlassDock extends StatelessWidget {
   const GlassDock({super.key, required this.index, required this.onSelect});

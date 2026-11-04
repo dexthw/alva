@@ -2,8 +2,8 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 
-import '../core/animation_utils.dart';
-import '../theme/app_colors.dart';
+import '../../core/utils/animation_utils.dart';
+import '../../core/theme/app_colors.dart';
 
 /// Chama da sequência.
 ///

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../core/animation_utils.dart';
-import '../../models/habit.dart';
-import '../../theme/app_colors.dart';
-import '../../widgets/animated_count.dart';
-import '../../widgets/streak_flame.dart';
+import '../../../core/utils/animation_utils.dart';
+import '../../../data/models/habit.dart';
+import '../../../core/theme/app_colors.dart';
+import '../../../shared/widgets/animated_count.dart';
+import '../../../shared/widgets/streak_flame.dart';
 import 'period_views.dart';
 
 class HabitCard extends StatelessWidget {

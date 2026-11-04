@@ -1,5 +1,5 @@
-import 'package:alva/data/habit_repository.dart';
-import 'package:alva/models/habit.dart';
+import 'package:alva/data/repositories/habit_repository.dart';
+import 'package:alva/data/models/habit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

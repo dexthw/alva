@@ -1,4 +1,4 @@
-import 'package:alva/models/habit.dart';
+import 'package:alva/data/models/habit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

@@ -3,8 +3,8 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 
-import '../core/animation_utils.dart';
-import '../theme/app_colors.dart';
+import '../../core/utils/animation_utils.dart';
+import '../../core/theme/app_colors.dart';
 
 /// Anel de progresso em vidro fosco facetado.
 ///

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/home/glass_dock.dart';
-import 'home_page.dart';
-import 'settings_page.dart';
+import '../../shared/widgets/glass_dock.dart';
+import '../home/home_page.dart';
+import '../settings/settings_page.dart';
 
 /// Casca do app: mantém a Home viva e alterna com a aba de Ajustes.
 class AppShell extends StatefulWidget {

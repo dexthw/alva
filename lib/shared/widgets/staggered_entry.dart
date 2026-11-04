@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
-import '../core/animation_utils.dart';
+import '../../core/utils/animation_utils.dart';
 
 /// Entrada escalonada (fade + deslocamento de baixo para cima).
 class StaggeredEntry extends StatefulWidget {

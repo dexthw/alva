@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../core/animation_utils.dart';
-import '../../core/date_labels.dart';
-import '../../models/habit.dart';
-import '../../theme/app_colors.dart';
+import '../../../core/utils/animation_utils.dart';
+import '../../../core/utils/date_labels.dart';
+import '../../../data/models/habit.dart';
+import '../../../core/theme/app_colors.dart';
 
 /// Alterna entre os três modos de exibição de dias do card.
 class HabitPeriodView extends StatelessWidget {

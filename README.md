@@ -39,17 +39,25 @@ dart run flutter_launcher_icons
 
 ```text
 lib/
-├─ main.dart              entrada do app
-├─ core/                  helpers de animação e rótulos de data
-├─ models/habit.dart      Habit, Period e estatísticas
-├─ data/                  HabitRepository (shared_preferences) e frases
-├─ screens/               Home, Settings e o shell com o dock
-├─ theme/                 cores e tema Material 3
-└─ widgets/               anel, chama, contagem e widgets da Home
-test/                     testes unitários e de widget
+├─ main.dart              só inicializa o app
+├─ app.dart               tema e rota inicial
+├─ core/                  tokens de layout, tema e utilitários (animação, datas)
+├─ data/                  models (Habit, Period), repositório e frases
+├─ features/              home, habits, settings e shell
+└─ shared/widgets/        anel, chama, contagem, dock e grade de pontos
+test/                     espelha lib/ (data, features, shared)
 docs/                     backlog da versão e checklist de regressão
 .github/ISSUE_TEMPLATE/   formulários de bug e feedback
 ```
+
+### Camadas
+
+```text
+Widget (features/home) → HomeController (ChangeNotifier) → HabitRepository → shared_preferences
+```
+
+A UI não acessa o storage: ela escuta o controller e chama métodos. O controller
+concentra filtro, período, frase do dia e o debounce de salvamento.
 
 ## Issues e backlog
 

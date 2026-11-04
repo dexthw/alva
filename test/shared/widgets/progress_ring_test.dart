@@ -1,4 +1,4 @@
-import 'package:alva/widgets/progress_ring.dart';
+import 'package:alva/shared/widgets/progress_ring.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
