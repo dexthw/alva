@@ -1,4 +1,4 @@
-import 'package:alva/models/habit.dart';
+import 'package:alva/data/models/habit.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -37,7 +37,7 @@ void main() {
     final bool added = habit.toggleOn(now);
 
     expect(added, isTrue);
-    expect(habit.isCompletedToday, isTrue);
+    expect(habit.isCompletedOn(now), isTrue);
     expect(habit.streak, 3);
   });
 
@@ -53,7 +53,7 @@ void main() {
     final bool added = habit.toggleOn(now);
 
     expect(added, isFalse);
-    expect(habit.isCompletedToday, isFalse);
+    expect(habit.isCompletedOn(now), isFalse);
     expect(habit.streak, 2);
   });
 
