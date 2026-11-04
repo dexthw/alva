@@ -1,0 +1,82 @@
+name: Bug
+description: Registrar um comportamento errado no app
+title: "[bug] "
+labels: ["bug", "triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Obrigado por reportar. Quanto mais detalhe, mais rápido o problema é corrigido.
+        Antes de abrir, confira se já existe uma issue parecida.
+
+  - type: input
+    id: versao
+    attributes:
+      label: Versão do app
+      description: Versão do APK instalado (ex.: 1.1.0+3). A versão não aparece na interface.
+      placeholder: "1.1.0+3"
+    validations:
+      required: true
+
+  - type: input
+    id: aparelho
+    attributes:
+      label: Aparelho e Android
+      description: Modelo, fabricante e versão do Android.
+      placeholder: "Galaxy A54, Android 14"
+    validations:
+      required: true
+
+  - type: textarea
+    id: passos
+    attributes:
+      label: Passos para reproduzir
+      description: Numerados, do app recém-aberto até o problema aparecer.
+      placeholder: |
+        1. Abrir o app
+        2. Tocar em "Novo"
+        3. Criar o hábito "Correr"
+        4. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: esperado
+    attributes:
+      label: O que era esperado
+    validations:
+      required: true
+
+  - type: textarea
+    id: obtido
+    attributes:
+      label: O que aconteceu
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Screenshot ou vídeo
+      description: Arraste o arquivo aqui, se possível. Ajuda muito na parte visual.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: frequencia
+    attributes:
+      label: Com que frequência acontece
+      options:
+        - Sempre
+        - Às vezes
+        - Aconteceu uma vez
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: confirmacao
+    attributes:
+      label: Confirmação
+      options:
+        - label: Procurei issues parecidas antes de abrir esta.
+          required: true

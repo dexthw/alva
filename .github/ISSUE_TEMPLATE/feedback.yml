@@ -1,0 +1,62 @@
+name: Feedback
+description: Sugerir uma melhoria ou dar uma opinião sobre o app
+title: "[feedback] "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use este formulário para ideias, melhorias e opiniões. Para erros, use o formulário **Bug**.
+
+  - type: dropdown
+    id: tipo
+    attributes:
+      label: Tipo de feedback
+      options:
+        - Ideia de funcionalidade
+        - Melhoria de algo que já existe
+        - Opinião sobre o visual
+        - Outro
+    validations:
+      required: true
+
+  - type: textarea
+    id: descricao
+    attributes:
+      label: Descreva o feedback
+      description: O que você gostaria que existisse ou mudasse, e em que momento do uso.
+    validations:
+      required: true
+
+  - type: textarea
+    id: beneficio
+    attributes:
+      label: Que problema isso resolve
+      description: Como isso deixa o app mais fácil no dia a dia.
+    validations:
+      required: false
+
+  - type: input
+    id: versao
+    attributes:
+      label: Versão do app
+      description: Versão do APK instalado (ex.: 1.1.0+3).
+      placeholder: "1.1.0+3"
+    validations:
+      required: true
+
+  - type: input
+    id: aparelho
+    attributes:
+      label: Aparelho e Android
+      placeholder: "Galaxy A54, Android 14"
+    validations:
+      required: false
+
+  - type: textarea
+    id: screenshot
+    attributes:
+      label: Referência visual
+      description: Imagem, mockup ou exemplo de outro app. Opcional.
+    validations:
+      required: false
