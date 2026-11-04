@@ -1,25 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../../../data/models/habit.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../data/models/habit.dart';
 import '../../../shared/widgets/animated_count.dart';
 import '../../../shared/widgets/progress_ring.dart';
 
 class HeroProgressCard extends StatelessWidget {
-  const HeroProgressCard({
-    super.key,
-    required this.stats,
-    required this.period,
-  });
+  const HeroProgressCard({super.key, required this.stats});
 
   final PeriodStats stats;
-  final Period period;
-
-  String get _label => switch (period) {
-    Period.week => 'PROGRESSO DA SEMANA',
-    Period.month => 'PROGRESSO DO MÊS',
-    Period.year => 'PROGRESSO DO ANO',
-  };
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +27,11 @@ class HeroProgressCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  _label,
+                const Text(
+                  'PROGRESSO DE HOJE',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 10.5,
                     fontWeight: FontWeight.w500,
                     letterSpacing: 1,
@@ -83,7 +72,7 @@ class HeroProgressCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 const Text(
-                  'concluídos',
+                  'concluídos hoje',
                   style: TextStyle(
                     fontSize: 15,
                     fontWeight: FontWeight.w500,

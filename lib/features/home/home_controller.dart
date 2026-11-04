@@ -25,6 +25,7 @@ class HomeController extends ChangeNotifier {
   bool _showAll = false;
   bool _loaded = false;
   int _nextId = 1;
+  HabitStorageStatus _status = HabitStorageStatus.empty;
   final Map<int, int> _bursts = <int, int>{};
   Timer? _saveTimer;
 
@@ -34,9 +35,19 @@ class HomeController extends ChangeNotifier {
   String get phrase => _phrase;
   bool get showAll => _showAll;
   bool get loaded => _loaded;
+  HabitStorageStatus get status => _status;
 
   /// Contador de explosões da chama deste hábito.
   int burstFor(int habitId) => _bursts[habitId] ?? 0;
+
+  int get totalHabits => _habits.length;
+
+  int get completedToday =>
+      _habits.where((Habit habit) => habit.isCompletedToday).length;
+
+  /// Progresso do dia: hábitos concluídos hoje ÷ hábitos ativos.
+  PeriodStats get todayStats =>
+      PeriodStats(completed: completedToday, expected: totalHabits);
 
   List<Habit> get filteredHabits {
     if (_selectedCategory <= 0) {
@@ -52,23 +63,13 @@ class HomeController extends ChangeNotifier {
       ? filteredHabits
       : filteredHabits.take(AppSizes.visibleHabits).toList();
 
-  PeriodStats get aggregateStats {
-    int completed = 0;
-    int expected = 0;
-    for (final Habit habit in _habits) {
-      final PeriodStats stats = habit.stats(_period);
-      completed += stats.completed;
-      expected += stats.expected;
-    }
-    return PeriodStats(completed: completed, expected: expected);
-  }
-
   Future<void> load() async {
     final HabitState state = await _repository.load();
     _habits = state.habits;
     _selectedCategory = state.selectedCategory;
     _period = state.period;
     _phrase = pickMotivationPhrase(last: state.lastPhrase);
+    _status = state.status;
     _nextId =
         _habits.fold<int>(
           0,
@@ -77,7 +78,10 @@ class HomeController extends ChangeNotifier {
         1;
     _loaded = true;
     notifyListeners();
-    _scheduleSave();
+    // Não sobrescreve um storage ilegível antes de o usuário decidir.
+    if (_status != HabitStorageStatus.corrupted) {
+      _scheduleSave();
+    }
   }
 
   /// Marca ou desmarca o hábito hoje e dispara a animação da chama.

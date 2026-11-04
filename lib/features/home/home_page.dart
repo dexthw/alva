@@ -7,6 +7,7 @@ import '../../core/constants.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/animation_utils.dart';
 import '../../data/models/habit.dart';
+import '../../data/repositories/habit_repository.dart';
 import '../../shared/widgets/dot_grid.dart';
 import '../../shared/widgets/staggered_entry.dart';
 import '../habits/new_habit_sheet.dart';
@@ -78,11 +79,15 @@ class _HomePageState extends State<HomePage> {
       );
   }
 
+  String get _emptyMessage => _controller.totalHabits == 0
+      ? 'Nenhum hábito ainda.\nToque em "Novo" para criar o primeiro.'
+      : 'Nenhum hábito nesta categoria ainda.';
+
   Widget _buildHabitList(List<Habit> visible, bool showEmpty) {
     final List<Widget> children = <Widget>[];
 
     if (showEmpty) {
-      children.add(const _EmptyHabits());
+      children.add(_EmptyHabits(message: _emptyMessage));
     } else {
       for (int i = 0; i < visible.length; i++) {
         final Habit habit = visible[i];
@@ -169,10 +174,7 @@ class _HomePageState extends State<HomePage> {
                         0,
                       ),
                       sliver: SliverToBoxAdapter(
-                        child: HeroProgressCard(
-                          stats: _controller.aggregateStats,
-                          period: _controller.period,
-                        ),
+                        child: HeroProgressCard(stats: _controller.todayStats),
                       ),
                     ),
                     SliverPadding(
@@ -214,6 +216,16 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
+                    if (_controller.status == HabitStorageStatus.corrupted)
+                      const SliverPadding(
+                        padding: EdgeInsets.fromLTRB(
+                          AppSpacing.page,
+                          12,
+                          AppSpacing.page,
+                          0,
+                        ),
+                        sliver: SliverToBoxAdapter(child: _StorageWarning()),
+                      ),
                     SliverPadding(
                       padding: const EdgeInsets.fromLTRB(
                         AppSpacing.page,
@@ -244,7 +256,9 @@ class _HomePageState extends State<HomePage> {
 }
 
 class _EmptyHabits extends StatelessWidget {
-  const _EmptyHabits();
+  const _EmptyHabits({required this.message});
+
+  final String message;
 
   @override
   Widget build(BuildContext context) {
@@ -256,10 +270,31 @@ class _EmptyHabits extends StatelessWidget {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: AppColors.white08),
       ),
-      child: const Text(
-        'Nenhum hábito nesta categoria ainda.',
+      child: Text(
+        message,
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
+        style: const TextStyle(fontSize: 13, color: AppColors.textSecondary),
+      ),
+    );
+  }
+}
+
+class _StorageWarning extends StatelessWidget {
+  const _StorageWarning();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: AppColors.greenBackground,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.white08),
+      ),
+      child: const Text(
+        'Não foi possível ler os hábitos salvos. Você pode começar um novo hábito normalmente.',
+        style: TextStyle(fontSize: 12.5, color: AppColors.textSecondary),
       ),
     );
   }

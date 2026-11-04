@@ -4,6 +4,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/habit.dart';
 
+/// Situação da leitura do armazenamento local.
+enum HabitStorageStatus {
+  /// Dados lidos com sucesso.
+  ok,
+
+  /// Não há nada salvo (primeira instalação ou tudo apagado).
+  empty,
+
+  /// O conteúdo salvo não pôde ser interpretado.
+  corrupted,
+}
+
 /// Fotografia do estado persistido do app.
 class HabitState {
   HabitState({
@@ -11,32 +23,43 @@ class HabitState {
     required this.selectedCategory,
     required this.period,
     this.lastPhrase,
+    this.status = HabitStorageStatus.ok,
   });
 
   final List<Habit> habits;
   final int selectedCategory;
   final Period period;
   final String? lastPhrase;
+  final HabitStorageStatus status;
 
-  static HabitState defaults() => HabitState(
-    habits: <Habit>[
-      Habit(id: 1, name: 'Hábito 1', category: 'Fitness'),
-      Habit(id: 2, name: 'Hábito 2', category: 'Health'),
-      Habit(id: 3, name: 'Hábito 3', category: 'Estudo'),
-    ],
+  /// Primeira instalação: nenhum hábito, nenhum dado.
+  static HabitState empty() => HabitState(
+    habits: <Habit>[],
     selectedCategory: 0,
     period: Period.week,
+    status: HabitStorageStatus.empty,
+  );
+
+  /// Conteúdo ilegível: o app abre vazio em vez de inventar dados.
+  static HabitState corrupted() => HabitState(
+    habits: <Habit>[],
+    selectedCategory: 0,
+    period: Period.week,
+    status: HabitStorageStatus.corrupted,
   );
 }
 
 /// Persistência local em JSON via `shared_preferences`.
 ///
-/// A camada é intencionalmente pequena: para trocar por Hive/Isar basta
-/// reimplementar `load`/`save` mantendo `HabitState`.
+/// Para trocar por Hive/Isar basta reimplementar `load`/`save` mantendo
+/// `HabitState`.
 class HabitRepository {
   HabitRepository({SharedPreferences? prefs}) : _prefs = prefs;
 
   static const String storageKey = 'alva.habits.v1';
+
+  /// Versão do esquema gravada no JSON.
+  static const int schemaVersion = 2;
 
   SharedPreferences? _prefs;
 
@@ -48,34 +71,42 @@ class HabitRepository {
       final SharedPreferences prefs = await _instance;
       final String? raw = prefs.getString(storageKey);
       if (raw == null || raw.isEmpty) {
-        return HabitState.defaults();
+        return HabitState.empty();
       }
 
       final Object? decoded = jsonDecode(raw);
       if (decoded is! Map<String, dynamic>) {
-        return HabitState.defaults();
+        return HabitState.corrupted();
       }
+
+      final Object? rawVersion = decoded['version'];
+      final int version = rawVersion is int ? rawVersion : 1;
 
       final List<Habit> habits = <Habit>[];
       final Object? rawHabits = decoded['habits'];
       if (rawHabits is List) {
         for (final Object? item in rawHabits) {
           final Habit? habit = Habit.tryFromJson(item);
-          if (habit != null) {
-            habit.recalculateStreak();
-            habits.add(habit);
+          if (habit == null) {
+            continue;
           }
+          // v1 criava três hábitos de exemplo na primeira abertura.
+          if (version < 2 && _isSeedHabit(habit)) {
+            continue;
+          }
+          habit.recalculateStreak();
+          habits.add(habit);
         }
       }
+
       if (habits.isEmpty) {
-        return HabitState.defaults();
+        return HabitState.empty();
       }
 
       final Object? category = decoded['category'];
       final Object? phrase = decoded['lastPhrase'];
-      final int safeCategory = category is int &&
-              category >= 0 &&
-              category < habitCategories.length
+      final int safeCategory =
+          category is int && category >= 0 && category < habitCategories.length
           ? category
           : 0;
 
@@ -86,16 +117,27 @@ class HabitRepository {
         lastPhrase: phrase is String && phrase.isNotEmpty ? phrase : null,
       );
     } catch (_) {
-      // Dados corrompidos não podem impedir o app de abrir.
-      return HabitState.defaults();
+      return HabitState.corrupted();
     }
+  }
+
+  /// Registro de exemplo da v1 que nunca foi usado pelo usuário.
+  bool _isSeedHabit(Habit habit) {
+    const Map<int, String> seeds = <int, String>{
+      1: 'Hábito 1',
+      2: 'Hábito 2',
+      3: 'Hábito 3',
+    };
+    return seeds[habit.id] == habit.name &&
+        habit.completedDays.isEmpty &&
+        habit.streak == 0;
   }
 
   Future<void> save(HabitState state) async {
     try {
       final SharedPreferences prefs = await _instance;
       final String payload = jsonEncode(<String, dynamic>{
-        'version': 1,
+        'version': schemaVersion,
         'habits': state.habits.map((Habit habit) => habit.toJson()).toList(),
         'category': state.selectedCategory,
         'period': state.period.name,
