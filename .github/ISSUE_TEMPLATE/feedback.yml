@@ -40,7 +40,7 @@ body:
     id: versao
     attributes:
       label: Versão do app
-      description: Versão do APK instalado (ex.: 1.1.0+3).
+      description: "Versão do APK instalado (ex.: 1.1.0+3)."
       placeholder: "1.1.0+3"
     validations:
       required: true
