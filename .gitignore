@@ -1,0 +1,31 @@
+# Dart / Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+*.iml
+
+# IDE
+.idea/
+.vscode/
+
+# Android
+android/local.properties
+android/.gradle/
+android/app/debug/
+android/app/profile/
+android/app/release/
+android/.kotlin/
+android/key.properties
+*.jks
+*.keystore
+
+# Artefatos de entrega
+*.apk
+*.aab
+
+# Sistema / temporários
+.DS_Store
+.tmp-preview/
+.cloud-attachments/
