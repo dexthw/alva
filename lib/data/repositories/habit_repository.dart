@@ -23,6 +23,7 @@ class HabitState {
     required this.selectedCategory,
     required this.period,
     this.lastPhrase,
+    this.cardsCollapsed = false,
     this.status = HabitStorageStatus.ok,
   });
 
@@ -30,23 +31,26 @@ class HabitState {
   final int selectedCategory;
   final Period period;
   final String? lastPhrase;
+
+  /// Todos os cards recolhidos (controle global do cabeçalho).
+  final bool cardsCollapsed;
   final HabitStorageStatus status;
 
   /// Primeira instalação: nenhum hábito, nenhum dado.
   static HabitState empty() => HabitState(
-    habits: <Habit>[],
-    selectedCategory: 0,
-    period: Period.week,
-    status: HabitStorageStatus.empty,
-  );
+        habits: <Habit>[],
+        selectedCategory: 0,
+        period: Period.week,
+        status: HabitStorageStatus.empty,
+      );
 
   /// Conteúdo ilegível: o app abre vazio em vez de inventar dados.
   static HabitState corrupted() => HabitState(
-    habits: <Habit>[],
-    selectedCategory: 0,
-    period: Period.week,
-    status: HabitStorageStatus.corrupted,
-  );
+        habits: <Habit>[],
+        selectedCategory: 0,
+        period: Period.week,
+        status: HabitStorageStatus.corrupted,
+      );
 }
 
 /// Persistência local em JSON via `shared_preferences`.
@@ -107,14 +111,15 @@ class HabitRepository {
       final Object? phrase = decoded['lastPhrase'];
       final int safeCategory =
           category is int && category >= 0 && category < habitCategories.length
-          ? category
-          : 0;
+              ? category
+              : 0;
 
       return HabitState(
         habits: habits,
         selectedCategory: safeCategory,
         period: Period.fromName(decoded['period']),
         lastPhrase: phrase is String && phrase.isNotEmpty ? phrase : null,
+        cardsCollapsed: decoded['cardsCollapsed'] == true,
       );
     } catch (_) {
       return HabitState.corrupted();
@@ -142,6 +147,7 @@ class HabitRepository {
         'category': state.selectedCategory,
         'period': state.period.name,
         'lastPhrase': state.lastPhrase,
+        'cardsCollapsed': state.cardsCollapsed,
       });
       await prefs.setString(storageKey, payload);
     } catch (_) {

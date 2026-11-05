@@ -32,7 +32,6 @@ class AppSizes {
   static const double ring = 112;
   static const double thumbnail = 76;
   static const double checkButton = 48;
-  static const int visibleHabits = 3;
 }
 
 class AppDurations {

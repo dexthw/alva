@@ -37,9 +37,7 @@ class _NewHabitSheetState extends State<NewHabitSheet> {
     final bool canSubmit = _controller.text.trim().isNotEmpty;
 
     return Padding(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.viewInsetsOf(context).bottom,
-      ),
+      padding: EdgeInsets.only(bottom: MediaQuery.viewInsetsOf(context).bottom),
       child: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
@@ -75,10 +73,7 @@ class _NewHabitSheetState extends State<NewHabitSheet> {
               const SizedBox(height: 4),
               const Text(
                 'Escolha um nome e uma categoria.',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: AppColors.textSecondary,
-                ),
+                style: TextStyle(fontSize: 13, color: AppColors.textSecondary),
               ),
               const SizedBox(height: 16),
               TextField(

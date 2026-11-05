@@ -29,14 +29,13 @@ class AppColors {
   static const Color white25 = Color(0x40FFFFFF);
   static const Color white40 = Color(0x66FFFFFF);
 
-  // Anel de progresso em vidro facetado.
-  static const Color ringMint = Color(0xFFBFE8E6);
-  static const Color ringLavender = Color(0xFFD2CBF2);
-  static const Color ringLavenderLight = Color(0xFFC9C3EE);
-  static const Color ringLavenderGray = Color(0xFFA9A6D6);
-  static const Color ringSlate = Color(0xFF4B587A);
-  static const Color ringPeriwinkle = Color(0xFF7F93C4);
-  static const Color ringRimLight = Color(0xFF9FD8F0);
-  static const Color capStart = Color(0xFFFFE9F1);
-  static const Color capEnd = Color(0xFFF6CFE0);
+  // Anel de progresso: arco contínuo em vidro, com brilho pulsante.
+  static const Color ringArcMint = Color(0xFFCFEAE6);
+  static const Color ringArcLavender = Color(0xFFD8CFF5);
+  static const Color ringArcViolet = Color(0xFFB9B0E6);
+  static const Color ringArcSlate = Color(0xFF8E9CC8);
+  static const Color ringTrack = Color(0xFF7C8291);
+  static const Color ringCapLight = Color(0xFFFFF4F8);
+  static const Color ringCapRose = Color(0xFFF0A8C5);
+  static const Color ringCapHalo = Color(0xFFF2A9C6);
 }

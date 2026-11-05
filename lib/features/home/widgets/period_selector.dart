@@ -17,7 +17,8 @@ class PeriodSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const List<Period> options = Period.values;
-    final int selectedIndex = options.indexOf(value).clamp(0, options.length - 1);
+    final int selectedIndex =
+        options.indexOf(value).clamp(0, options.length - 1);
 
     return Container(
       height: 48,

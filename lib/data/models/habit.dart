@@ -56,7 +56,6 @@ class Habit {
     required this.category,
     this.streak = 0,
     Set<DateTime>? completedDays,
-    this.daysCollapsed = false,
   }) : completedDays = completedDays ?? <DateTime>{};
 
   final int id;
@@ -64,9 +63,6 @@ class Habit {
   final String category;
   int streak;
   final Set<DateTime> completedDays;
-
-  /// Estado do chevron que recolhe a área de dias deste card.
-  bool daysCollapsed;
 
   /// Data sem hora: chave usada no conjunto de dias concluídos.
   static DateTime dayKey(DateTime date) =>
@@ -123,10 +119,11 @@ class Habit {
       case Period.year:
         final DateTime first = DateTime(reference.year);
         final int elapsed = DateTime.utc(
-          reference.year,
-          reference.month,
-          reference.day,
-        ).difference(DateTime.utc(reference.year)).inDays + 1;
+              reference.year,
+              reference.month,
+              reference.day,
+            ).difference(DateTime.utc(reference.year)).inDays +
+            1;
         return PeriodStats(
           completed: _countBetween(first, reference),
           expected: elapsed,
@@ -155,7 +152,6 @@ class Habit {
       'name': name,
       'category': category,
       'streak': streak,
-      'collapsed': daysCollapsed,
       'days': days,
     };
   }
@@ -194,7 +190,6 @@ class Habit {
       category: category,
       streak: raw['streak'] is int ? raw['streak'] as int : 0,
       completedDays: days,
-      daysCollapsed: raw['collapsed'] == true,
     );
   }
 

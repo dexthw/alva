@@ -12,7 +12,7 @@ Labels usadas: `bug`, `feature`, `ui`, `data`, `docs`, `triage`, `feedback`,
 | # | Decisão |
 |---|---|
 | D1 | O progresso (anel, contagem) é **sempre de hoje**. Semana/Mês/Ano não alimentam o anel: servem para ver **onde o usuário falhou** nos checks. |
-| D2 | O nome da categoria ocupa o centro do anel; o chip verde de porcentagem do card é removido. |
+| D2 | O centro do anel mostra a porcentagem do dia, sem categoria; o chip verde de porcentagem do card é removido. |
 | D3 | Versão **1.1.0**, tag `v1.1.0`. |
 | D4 | Licença **MIT**. |
 
@@ -100,8 +100,9 @@ O check já usa `isCompletedToday`, mas o chip e o anel do hero usam
 
 **Labels:** `bug`, `ui`
 
-Resolvido na 1.0.2: `assets/logo.png` é 1024×1024 com alpha 0 nos cantos e o
-ícone adaptativo usa fundo `#0A0A0B` + foreground transparente.
+Resolvido na 1.1.0: `assets/logo.png` é 1024×1024 com alpha 0 nos cantos e o
+ícone adaptativo usa fundo cinza claro `#E6E6E9` + foreground transparente. O
+ícone legado vem de `assets/logo_light.png`, com o mesmo fundo aplicado.
 
 **Critérios de aceite**
 
@@ -288,6 +289,6 @@ padrão.
 | 3 | Refatoração de pastas e estado (sem issue de produto) |
 | 4 | B2, B3, B5, base de dados e migração |
 | 5 | Prévias de B1, F7, F8 e do mapa de falhas |
-| 6 | B1, B4, B6, F1, F2, F5, F6 |
+| 6 | B1, B4, B6, F1, F2, F5, F6, F7 |
 | 7 | F3, F4, V4, V5 |
 | 8 | F8, V6, CHANGELOG, README final, testes |

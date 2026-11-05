@@ -7,11 +7,7 @@ import '../../../core/theme/app_colors.dart';
 
 /// Alterna entre os três modos de exibição de dias do card.
 class HabitPeriodView extends StatelessWidget {
-  const HabitPeriodView({
-    super.key,
-    required this.habit,
-    required this.period,
-  });
+  const HabitPeriodView({super.key, required this.habit, required this.period});
 
   final Habit habit;
   final Period period;
@@ -27,15 +23,18 @@ class HabitPeriodView extends StatelessWidget {
         children: <Widget>[...previous, if (current != null) current],
       ),
       child: switch (period) {
-        Period.week => WeekRow(key: const ValueKey<String>('week'), habit: habit),
+        Period.week => WeekRow(
+            key: const ValueKey<String>('week'),
+            habit: habit,
+          ),
         Period.month => MonthGrid(
-          key: const ValueKey<String>('month'),
-          habit: habit,
-        ),
+            key: const ValueKey<String>('month'),
+            habit: habit,
+          ),
         Period.year => YearHeatmap(
-          key: const ValueKey<String>('year'),
-          habit: habit,
-        ),
+            key: const ValueKey<String>('year'),
+            habit: habit,
+          ),
       },
     );
   }
@@ -328,9 +327,8 @@ class _YearMonthCell extends StatelessWidget {
     if (month > now.month) {
       ratio = 0;
     } else {
-      final int days = month == now.month
-          ? now.day
-          : DateTime(year, month + 1, 0).day;
+      final int days =
+          month == now.month ? now.day : DateTime(year, month + 1, 0).day;
       final int done = habit.completedDays
           .where((DateTime day) => day.year == year && day.month == month)
           .length;

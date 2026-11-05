@@ -12,7 +12,6 @@ Map<String, dynamic> _habit(int id, String name, String category) =>
       'name': name,
       'category': category,
       'streak': 0,
-      'collapsed': false,
       'days': <String>[],
     };
 
@@ -34,7 +33,7 @@ void main() {
     });
   }
 
-  test('filtro Todos mostra cada hábito uma única vez', () async {
+  test('filtro Todos mostra cada hábito uma única vez, sem limite', () async {
     seedThreeHabits();
     final HomeController controller = HomeController();
     addTearDown(controller.dispose);
@@ -45,7 +44,6 @@ void main() {
       controller.filteredHabits.map((Habit habit) => habit.id).toList(),
       <int>[1, 2, 3],
     );
-    expect(controller.visibleHabits.length, 3);
 
     controller.selectPeriod(Period.month);
     expect(controller.filteredHabits.length, 3);
@@ -62,7 +60,6 @@ void main() {
     controller.selectCategory(1); // Fitness
 
     expect(controller.filteredHabits.single.name, 'Corrida');
-    expect(controller.visibleHabits.length, 1);
   });
 
   test('primeira instalação abre vazia e com progresso zero', () async {
@@ -107,6 +104,37 @@ void main() {
 
     expect(controller.todayStats.completed, antes.completed);
     expect(controller.todayStats.expected, antes.expected);
+  });
+
+  test('recolhimento global alterna e é persistido', () async {
+    seedThreeHabits();
+    final HomeController controller = HomeController();
+    addTearDown(controller.dispose);
+
+    await controller.load();
+    expect(controller.cardsCollapsed, isFalse);
+
+    controller.toggleCardsCollapsed();
+    expect(controller.cardsCollapsed, isTrue);
+    await controller.saveNow();
+
+    final HabitState state = await HabitRepository().load();
+    expect(state.cardsCollapsed, isTrue);
+  });
+
+  test('frase do dia não muda ao reabrir o app', () async {
+    seedThreeHabits();
+    final HomeController first = HomeController();
+    await first.load();
+    final String phrase = first.phrase;
+    await first.saveNow();
+    first.dispose();
+
+    final HomeController second = HomeController();
+    addTearDown(second.dispose);
+    await second.load();
+
+    expect(second.phrase, phrase);
   });
 
   test('Controller não inventa hábitos com storage corrompido', () async {

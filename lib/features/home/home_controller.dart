@@ -14,7 +14,7 @@ import '../../data/repositories/habit_repository.dart';
 /// fora do repositório.
 class HomeController extends ChangeNotifier {
   HomeController({HabitRepository? repository})
-    : _repository = repository ?? HabitRepository();
+      : _repository = repository ?? HabitRepository();
 
   final HabitRepository _repository;
 
@@ -22,7 +22,7 @@ class HomeController extends ChangeNotifier {
   int _selectedCategory = 0;
   Period _period = Period.week;
   String _phrase = motivationPhrases.first;
-  bool _showAll = false;
+  bool _cardsCollapsed = false;
   bool _loaded = false;
   int _nextId = 1;
   HabitStorageStatus _status = HabitStorageStatus.empty;
@@ -33,7 +33,7 @@ class HomeController extends ChangeNotifier {
   int get selectedCategory => _selectedCategory;
   Period get period => _period;
   String get phrase => _phrase;
-  bool get showAll => _showAll;
+  bool get cardsCollapsed => _cardsCollapsed;
   bool get loaded => _loaded;
   HabitStorageStatus get status => _status;
 
@@ -54,24 +54,18 @@ class HomeController extends ChangeNotifier {
       return _habits;
     }
     final String category = habitCategories[_selectedCategory];
-    return _habits
-        .where((Habit habit) => habit.category == category)
-        .toList();
+    return _habits.where((Habit habit) => habit.category == category).toList();
   }
-
-  List<Habit> get visibleHabits => _showAll
-      ? filteredHabits
-      : filteredHabits.take(AppSizes.visibleHabits).toList();
 
   Future<void> load() async {
     final HabitState state = await _repository.load();
     _habits = state.habits;
     _selectedCategory = state.selectedCategory;
     _period = state.period;
-    _phrase = pickMotivationPhrase(last: state.lastPhrase);
+    _cardsCollapsed = state.cardsCollapsed;
+    _phrase = motivationPhraseFor(DateTime.now());
     _status = state.status;
-    _nextId =
-        _habits.fold<int>(
+    _nextId = _habits.fold<int>(
           0,
           (int max, Habit habit) => math.max(max, habit.id),
         ) +
@@ -94,8 +88,9 @@ class HomeController extends ChangeNotifier {
     _scheduleSave();
   }
 
-  void toggleCollapsed(Habit habit) {
-    habit.daysCollapsed = !habit.daysCollapsed;
+  /// Recolhe ou expande a área de dias de todos os cards.
+  void toggleCardsCollapsed() {
+    _cardsCollapsed = !_cardsCollapsed;
     notifyListeners();
     _scheduleSave();
   }
@@ -105,7 +100,6 @@ class HomeController extends ChangeNotifier {
       return;
     }
     _selectedCategory = index;
-    _showAll = false;
     notifyListeners();
     _scheduleSave();
   }
@@ -119,15 +113,9 @@ class HomeController extends ChangeNotifier {
     _scheduleSave();
   }
 
-  void toggleShowAll() {
-    _showAll = !_showAll;
-    notifyListeners();
-  }
-
   void addHabit({required String name, required String category}) {
     _habits.add(Habit(id: _nextId++, name: name, category: category));
     _selectedCategory = 0;
-    _showAll = false;
     notifyListeners();
     _scheduleSave();
   }
@@ -150,6 +138,7 @@ class HomeController extends ChangeNotifier {
         selectedCategory: _selectedCategory,
         period: _period,
         lastPhrase: _phrase,
+        cardsCollapsed: _cardsCollapsed,
       ),
     );
   }

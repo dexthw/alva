@@ -98,8 +98,10 @@ class _StreakFlameState extends State<StreakFlame>
           final double burst = _burst.value;
           final double burstScale = 1 + 0.42 * math.sin(math.pi * burst);
           final double scale = (1 + 0.055 * pulse) * burstScale;
-          final double rotation = 0.07 * math.sin(2 * math.pi * _pulse.value + 0.8);
-          final double glow = 0.34 + 0.12 * pulse;
+          final double rotation =
+              0.07 * math.sin(2 * math.pi * _pulse.value + 0.8);
+          // O burst reduz o brilho, mas nunca o apaga por completo.
+          final double glow = (0.34 + 0.12 * pulse) * (1 - 0.22 * burst);
 
           return Stack(
             alignment: Alignment.center,
@@ -113,7 +115,7 @@ class _StreakFlameState extends State<StreakFlame>
                   boxShadow: <BoxShadow>[
                     BoxShadow(
                       color: AppColors.flame.withValues(
-                        alpha: (glow * (1 - burst)).clamp(0.0, 1.0),
+                        alpha: glow.clamp(0.0, 1.0),
                       ),
                       blurRadius: 11,
                       spreadRadius: 2,

@@ -24,12 +24,12 @@ void main() {
     });
   }
 
-  testWidgets('progresso fora da faixa é limitado', (WidgetTester tester) async {
+  testWidgets('progresso fora da faixa é limitado', (
+    WidgetTester tester,
+  ) async {
     await tester.pumpWidget(
       const MaterialApp(
-        home: Scaffold(
-          body: Center(child: ProgressRing(progress: 1.8)),
-        ),
+        home: Scaffold(body: Center(child: ProgressRing(progress: 1.8))),
       ),
     );
     await tester.pump(const Duration(milliseconds: 700));

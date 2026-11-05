@@ -6,11 +6,11 @@ void main() {
   final DateTime now = DateTime(2026, 11, 3);
 
   Habit habitWith(List<DateTime> days) => Habit(
-    id: 1,
-    name: 'Teste',
-    category: 'Fitness',
-    completedDays: days.map(Habit.dayKey).toSet(),
-  );
+        id: 1,
+        name: 'Teste',
+        category: 'Fitness',
+        completedDays: days.map(Habit.dayKey).toSet(),
+      );
 
   test('sem dias a sequência é zero', () {
     final Habit habit = habitWith(<DateTime>[]);

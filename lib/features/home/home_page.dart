@@ -83,25 +83,25 @@ class _HomePageState extends State<HomePage> {
       ? 'Nenhum hábito ainda.\nToque em "Novo" para criar o primeiro.'
       : 'Nenhum hábito nesta categoria ainda.';
 
-  Widget _buildHabitList(List<Habit> visible, bool showEmpty) {
+  Widget _buildHabitList(List<Habit> items, bool showEmpty) {
     final List<Widget> children = <Widget>[];
 
     if (showEmpty) {
       children.add(_EmptyHabits(message: _emptyMessage));
     } else {
-      for (int i = 0; i < visible.length; i++) {
-        final Habit habit = visible[i];
+      for (int i = 0; i < items.length; i++) {
+        final Habit habit = items[i];
         children.add(
           Padding(
-            padding: EdgeInsets.only(bottom: i == visible.length - 1 ? 0 : 12),
+            padding: EdgeInsets.only(bottom: i == items.length - 1 ? 0 : 12),
             child: StaggeredEntry(
               index: i,
               child: HabitCard(
                 habit: habit,
                 period: _controller.period,
                 burstToken: _controller.burstFor(habit.id),
+                collapsed: _controller.cardsCollapsed,
                 onToggle: () => _toggleHabit(habit),
-                onToggleCollapsed: () => _controller.toggleCollapsed(habit),
               ),
             ),
           ),
@@ -124,7 +124,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           key: ValueKey<String>(
             '${_controller.selectedCategory}-${_controller.period}-'
-            '${_controller.showAll}-${_controller.habits.length}',
+            '${_controller.cardsCollapsed}-${_controller.habits.length}',
           ),
           children: children,
         ),
@@ -138,7 +138,6 @@ class _HomePageState extends State<HomePage> {
       listenable: _controller,
       builder: (BuildContext context, Widget? child) {
         final List<Habit> filtered = _controller.filteredHabits;
-        final List<Habit> visible = _controller.visibleHabits;
 
         return Scaffold(
           body: Stack(
@@ -163,6 +162,8 @@ class _HomePageState extends State<HomePage> {
                         child: Header(
                           phrase: _controller.phrase,
                           onNewHabit: _openNewHabitSheet,
+                          cardsCollapsed: _controller.cardsCollapsed,
+                          onToggleCards: _controller.toggleCardsCollapsed,
                         ),
                       ),
                     ),
@@ -206,14 +207,8 @@ class _HomePageState extends State<HomePage> {
                         AppSpacing.page,
                         0,
                       ),
-                      sliver: SliverToBoxAdapter(
-                        child: SectionHeader(
-                          title: 'Meus hábitos',
-                          expanded: _controller.showAll,
-                          canExpand:
-                              filtered.length > AppSizes.visibleHabits,
-                          onToggle: _controller.toggleShowAll,
-                        ),
+                      sliver: const SliverToBoxAdapter(
+                        child: SectionHeader(title: 'Meus hábitos'),
                       ),
                     ),
                     if (_controller.status == HabitStorageStatus.corrupted)
@@ -235,7 +230,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       sliver: SliverToBoxAdapter(
                         child: _controller.loaded
-                            ? _buildHabitList(visible, filtered.isEmpty)
+                            ? _buildHabitList(filtered, filtered.isEmpty)
                             : const SizedBox.shrink(),
                       ),
                     ),

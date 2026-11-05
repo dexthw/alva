@@ -1,5 +1,3 @@
-import 'dart:math';
-
 /// Banco de frases curtas em pt-BR.
 const List<String> motivationPhrases = <String>[
   'Um passo por vez já é progresso.',
@@ -38,18 +36,10 @@ const List<String> motivationPhrases = <String>[
   'Pequenas vitórias, grandes mudanças.',
 ];
 
-/// Sorteia uma frase evitando repetir a última exibida.
-String pickMotivationPhrase({String? last, Random? random}) {
-  final Random rng = random ?? Random();
-  if (motivationPhrases.length < 2) {
-    return motivationPhrases.first;
-  }
-
-  int index = rng.nextInt(motivationPhrases.length);
-  final int lastIndex = last == null ? -1 : motivationPhrases.indexOf(last);
-  if (index == lastIndex) {
-    index = (index + 1 + rng.nextInt(motivationPhrases.length - 1)) %
-        motivationPhrases.length;
-  }
-  return motivationPhrases[index];
+/// Frase do dia: a mesma durante todo o dia e outra no dia seguinte.
+///
+/// A escolha depende só da data, então reabrir o app não troca a frase.
+String motivationPhraseFor(DateTime date) {
+  final int seed = date.year * 10000 + date.month * 100 + date.day;
+  return motivationPhrases[seed % motivationPhrases.length];
 }

@@ -6,18 +6,16 @@ void main() {
   final DateTime now = DateTime(2026, 11, 3);
 
   Habit habitWith(List<DateTime> days) => Habit(
-    id: 1,
-    name: 'Teste',
-    category: 'Fitness',
-    completedDays: days.map(Habit.dayKey).toSet(),
-  );
+        id: 1,
+        name: 'Teste',
+        category: 'Fitness',
+        completedDays: days.map(Habit.dayKey).toSet(),
+      );
 
   group('porcentagem por período', () {
     test('semana começa em 0%', () {
-      final PeriodStats stats = habitWith(<DateTime>[]).stats(
-        Period.week,
-        now: now,
-      );
+      final PeriodStats stats =
+          habitWith(<DateTime>[]).stats(Period.week, now: now);
       expect(stats.completed, 0);
       expect(stats.expected, 2); // segunda e terça
       expect(stats.percent, 0);

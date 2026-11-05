@@ -76,9 +76,8 @@ class CategoryChips extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 13.5,
                     fontWeight: FontWeight.w500,
-                    color: selected
-                        ? AppColors.background
-                        : AppColors.textPrimary,
+                    color:
+                        selected ? AppColors.background : AppColors.textPrimary,
                   ),
                   child: Text(habitCategories[index]),
                 ),

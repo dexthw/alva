@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../../core/utils/animation_utils.dart';
 import '../../../data/models/habit.dart';
 import '../../../core/theme/app_colors.dart';
-import '../../../shared/widgets/animated_count.dart';
 import '../../../shared/widgets/streak_flame.dart';
 import 'period_views.dart';
 
@@ -13,20 +12,20 @@ class HabitCard extends StatelessWidget {
     required this.habit,
     required this.period,
     required this.onToggle,
-    required this.onToggleCollapsed,
+    this.collapsed = false,
     this.burstToken = 0,
   });
 
   final Habit habit;
   final Period period;
   final VoidCallback onToggle;
-  final VoidCallback onToggleCollapsed;
+
+  /// Recolhimento global: vale para todos os cards ao mesmo tempo.
+  final bool collapsed;
   final int burstToken;
 
   @override
   Widget build(BuildContext context) {
-    final int percent = habit.stats(period).percent;
-
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
@@ -60,8 +59,6 @@ class HabitCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     StreakLine(streak: habit.streak, burstToken: burstToken),
-                    const SizedBox(height: 6),
-                    PercentChip(percent: percent),
                   ],
                 ),
               ),
@@ -69,16 +66,7 @@ class HabitCard extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: <Widget>[
-                  Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      CategoryTag(label: habit.category),
-                      CollapseButton(
-                        collapsed: habit.daysCollapsed,
-                        onTap: onToggleCollapsed,
-                      ),
-                    ],
-                  ),
+                  CategoryTag(label: habit.category),
                   const SizedBox(height: 6),
                   CheckButton(
                     completed: habit.isCompletedToday,
@@ -92,7 +80,7 @@ class HabitCard extends StatelessWidget {
             duration: context.motion(const Duration(milliseconds: 240)),
             curve: Curves.easeOutCubic,
             alignment: Alignment.topCenter,
-            child: habit.daysCollapsed
+            child: collapsed
                 ? const SizedBox(width: double.infinity)
                 : Padding(
                     padding: const EdgeInsets.only(top: 12),
@@ -140,44 +128,6 @@ class StreakLine extends StatelessWidget {
               style: TextStyle(fontSize: 12.5, color: AppColors.textSecondary),
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class PercentChip extends StatelessWidget {
-  const PercentChip({super.key, required this.percent});
-
-  final int percent;
-
-  @override
-  Widget build(BuildContext context) {
-    final bool done = percent >= 100;
-
-    return AnimatedScale(
-      scale: done ? 1.05 : 1,
-      duration: context.motion(const Duration(milliseconds: 260)),
-      curve: Curves.easeOutBack,
-      child: AnimatedContainer(
-        duration: context.motion(const Duration(milliseconds: 240)),
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
-        decoration: BoxDecoration(
-          color: done ? AppColors.greenSurface : AppColors.greenBackground,
-          borderRadius: BorderRadius.circular(999),
-          border: done
-              ? Border.all(color: AppColors.greenText.withValues(alpha: 0.35))
-              : null,
-        ),
-        child: AnimatedCount(
-          value: percent,
-          suffix: '%',
-          style: const TextStyle(
-            fontSize: 11.5,
-            fontWeight: FontWeight.w600,
-            height: 1.2,
-            color: AppColors.greenText,
-          ),
         ),
       ),
     );
@@ -303,13 +253,12 @@ class CheckButton extends StatelessWidget {
                 duration: context.motion(const Duration(milliseconds: 200)),
                 switchInCurve: Curves.easeOutBack,
                 switchOutCurve: Curves.easeOut,
-                transitionBuilder:
-                    (Widget child, Animation<double> animation) {
-                      return ScaleTransition(
-                        scale: animation,
-                        child: FadeTransition(opacity: animation, child: child),
-                      );
-                    },
+                transitionBuilder: (Widget child, Animation<double> animation) {
+                  return ScaleTransition(
+                    scale: animation,
+                    child: FadeTransition(opacity: animation, child: child),
+                  );
+                },
                 child: Icon(
                   Icons.check,
                   key: ValueKey<bool>(completed),
@@ -317,43 +266,6 @@ class CheckButton extends StatelessWidget {
                   color: completed ? AppColors.background : AppColors.white25,
                 ),
               ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CollapseButton extends StatelessWidget {
-  const CollapseButton({
-    super.key,
-    required this.collapsed,
-    required this.onTap,
-  });
-
-  final bool collapsed;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      label: collapsed ? 'Expandir dias' : 'Recolher dias',
-      child: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: onTap,
-        child: SizedBox(
-          width: 26,
-          height: 26,
-          child: AnimatedRotation(
-            turns: collapsed ? 0 : 0.5,
-            duration: context.motion(const Duration(milliseconds: 220)),
-            curve: Curves.easeOutCubic,
-            child: const Icon(
-              Icons.expand_more,
-              size: 18,
-              color: AppColors.white25,
             ),
           ),
         ),
