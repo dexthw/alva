@@ -18,6 +18,7 @@ class AppColors {
   static const Color greenText = Color(0xFF4ADE80);
   static const Color flame = Color(0xFFFF8A3D);
   static const Color flameDim = Color(0xFF57575E);
+  static const Color danger = Color(0xFFE5484D);
 
   // Branco com opacidade fixa: 6%, 8%, 10%, 12%, 15%, 20%, 25%.
   static const Color white06 = Color(0x0FFFFFFF);

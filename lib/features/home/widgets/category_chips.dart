@@ -73,12 +73,13 @@ class CategoryChips extends StatelessWidget {
                 ),
                 child: AnimatedDefaultTextStyle(
                   duration: context.motion(const Duration(milliseconds: 200)),
-                  style: TextStyle(
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.w500,
-                    color:
-                        selected ? AppColors.background : AppColors.textPrimary,
-                  ),
+                  style: DefaultTextStyle.of(context).style.copyWith(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w500,
+                        color: selected
+                            ? AppColors.background
+                            : AppColors.textPrimary,
+                      ),
                   child: Text(habitCategories[index]),
                 ),
               ),

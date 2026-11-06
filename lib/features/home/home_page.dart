@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,26 +18,17 @@ import 'widgets/period_selector.dart';
 import 'widgets/section_header.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({super.key, required this.controller});
+
+  /// Deve viver no shell para sobreviver à troca de abas.
+  final HomeController controller;
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  final HomeController _controller = HomeController();
-
-  @override
-  void initState() {
-    super.initState();
-    unawaited(_controller.load());
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
+  HomeController get _controller => widget.controller;
 
   void _toggleHabit(Habit habit) {
     HapticFeedback.lightImpact();

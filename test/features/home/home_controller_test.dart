@@ -137,6 +137,28 @@ void main() {
     expect(second.phrase, phrase);
   });
 
+  test('apagar todos os dados volta ao estado de primeira instalação',
+      () async {
+    seedThreeHabits();
+    final HomeController controller = HomeController();
+    addTearDown(controller.dispose);
+
+    await controller.load();
+    expect(controller.habits, isNotEmpty);
+
+    await controller.clearAll();
+
+    expect(controller.habits, isEmpty);
+    expect(controller.totalHabits, 0);
+    expect(controller.status, HabitStorageStatus.empty);
+    expect(controller.cardsCollapsed, isFalse);
+    expect(controller.selectedCategory, 0);
+    expect(controller.period, Period.week);
+
+    final HabitState state = await HabitRepository().load();
+    expect(state.habits, isEmpty);
+  });
+
   test('Controller não inventa hábitos com storage corrompido', () async {
     SharedPreferences.setMockInitialValues(<String, Object>{
       HabitRepository.storageKey: '{quebrado',

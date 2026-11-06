@@ -1,10 +1,11 @@
 # Alva
 
 Habit tracker em Flutter com UI escura, cards grafite, anel de progresso em
-vidro facetado e dock flutuante.
+vidro com brilho pulsante e dock flutuante.
 
-**Em desenvolvimento:** `1.1.0` — backlog e critérios de aceite em
-[`docs/issues.md`](docs/issues.md).
+**Versão atual:** `1.1.0` — backlog e critérios de aceite em
+[`docs/issues.md`](docs/issues.md) e roteiro de teste em
+[`docs/regressao.md`](docs/regressao.md).
 
 ## Como rodar
 
@@ -35,6 +36,17 @@ O ícone é gerado a partir de `assets/logo.png`:
 dart run flutter_launcher_icons
 ```
 
+### Fonte
+
+A Inter é empacotada em `assets/fonts/Inter.ttf` (fonte variável, declarada nos
+pesos 300–600 no `pubspec.yaml`). Nenhuma fonte é baixada em tempo de execução.
+
+### Dados locais
+
+Hábitos e preferências ficam em `shared_preferences` (chave `alva.habits.v1`) e
+a versão vista da tela de novidades em `alva.last_seen_version`. Ambos podem ser
+apagados em **Ajustes → Apagar todos os dados**.
+
 ## Estrutura
 
 ```text
@@ -43,7 +55,7 @@ lib/
 ├─ app.dart               tema e rota inicial
 ├─ core/                  tokens de layout, tema e utilitários (animação, datas)
 ├─ data/                  models (Habit, Period), repositório e frases
-├─ features/              home, habits, settings e shell
+├─ features/              home, habits, settings, shell e whats_new
 └─ shared/widgets/        anel, chama, contagem, dock e grade de pontos
 test/                     espelha lib/ (data, features, shared)
 docs/                     backlog da versão e checklist de regressão
@@ -114,7 +126,7 @@ release de `git push origin production --tags`.
 ## Versionamento
 
 SemVer `MAJOR.MINOR.PATCH+build` no `pubspec.yaml`, registrado no
-`CHANGELOG.md` e marcado com a tag `vX.Y.Z`. A versão não aparece na interface.
+`CHANGELOG.md` e marcado com a tag `vX.Y.Z`. A versão aparece em Ajustes.
 
 ## Licença
 

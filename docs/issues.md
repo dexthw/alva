@@ -24,21 +24,21 @@ Labels usadas: `bug`, `feature`, `ui`, `data`, `docs`, `triage`, `feedback`,
 
 **Labels:** `bug`, `ui`
 
-O anel atual (`lib/widgets/progress_ring.dart`, 508 linhas) já é facetado, mas
-difere da referência aprovada: elipse inclinada 30° (a referência é ~18°),
-trilha azul-ardósia (a referência é vidro cinza quase transparente), cápsula rosa
-curta e centro com porcentagem. O chip verde do card também mostra porcentagem.
+O anel antigo era facetado e inclinado. O design aprovado na etapa 5 é um
+círculo contínuo, sem divisões, com a porcentagem no centro, cápsula rosa na
+ponta e brilho pulsante.
 
 **Critérios de aceite**
 
-- [ ] Elipse mais sutil que a atual, com facetas de vidro e bevel fino.
-- [ ] Trilha em vidro cinza translúcido, não azul.
-- [ ] Cápsula rosa alongada na ponta, integrada ao arco.
-- [ ] Halo de linhas concêntricas finas + régua no quadrante inferior direito.
-- [ ] Centro do anel mostra a categoria ativa (ou "Hoje" no filtro Todos).
-- [ ] Chip verde do card removido; a tag de categoria permanece.
-- [ ] Sem corte em 112dp e nos estados 0%, 33%, 66% e 100%.
-- [ ] Prévia visual aprovada antes do código (etapa 5).
+- [x] Círculo contínuo, sem facetas nem inclinação.
+- [x] Trilha em vidro cinza translúcido, não azul.
+- [x] Cápsula rosa alongada na ponta, integrada ao arco.
+- [x] Halo de linhas concêntricas finas + régua na ponta.
+- [x] Centro do anel mostra a porcentagem do dia.
+- [x] Chip verde do card removido; a tag de categoria permanece.
+- [x] Sem corte em 112dp e nos estados 0%, 33%, 66% e 100%.
+- [x] Prévia visual aprovada antes do código (etapa 5).
+- [x] Brilho pulsante (~2,2s) e estático com `disableAnimations`.
 
 ### B2 — Hábitos que não existem
 
@@ -50,10 +50,10 @@ hábitos que nunca criou.
 
 **Critérios de aceite**
 
-- [ ] Primeira instalação abre sem nenhum hábito.
-- [ ] JSON corrompido não gera hábitos fictícios; mostra estado de erro/vazio.
-- [ ] Migração v1→v2 remove somente os três registros de exemplo intactos.
-- [ ] Teste de repositório cobrindo storage vazio, corrompido e migração.
+- [x] Primeira instalação abre sem nenhum hábito.
+- [x] JSON corrompido não gera hábitos fictícios; mostra estado de erro/vazio.
+- [x] Migração v1→v2 remove somente os três registros de exemplo intactos.
+- [x] Teste de repositório cobrindo storage vazio, corrompido e migração.
 
 ### B3 — Filtro de período repete hábitos
 
@@ -64,8 +64,8 @@ filtra uma vez e cada hábito aparece uma vez. Era sintoma do código anterior �
 
 **Critérios de aceite**
 
-- [ ] Teste de widget com 3 hábitos e filtro por categoria garante 1 card por hábito.
-- [ ] Teste com Semana, Mês e Ano garante que a quantidade de cards não muda.
+- [x] Teste de widget com 3 hábitos e filtro por categoria garante 1 card por hábito.
+- [x] Teste com Semana, Mês e Ano garante que a quantidade de cards não muda.
 
 ### B4 — Blur da chama só aparece depois de outra ação
 
@@ -77,10 +77,10 @@ temporariamente, o que pode parecer "sem blur" no instante da conclusão.
 
 **Critérios de aceite**
 
-- [ ] Ao concluir o hábito, o brilho aparece imediatamente (≤1 frame).
-- [ ] O burst não apaga o brilho por completo.
-- [ ] Widget test verifica o `boxShadow` presente logo após o toggle.
-- [ ] `MediaQuery.disableAnimations` mantém o brilho estático.
+- [x] Ao concluir o hábito, o brilho aparece imediatamente (≤1 frame).
+- [x] O burst não apaga o brilho por completo.
+- [x] Widget test verifica o `boxShadow` presente logo após o toggle.
+- [x] `MediaQuery.disableAnimations` mantém o brilho estático.
 
 ### B5 — Concluído e anel contam dias anteriores
 
@@ -91,10 +91,10 @@ O check já usa `isCompletedToday`, mas o chip e o anel do hero usam
 
 **Critérios de aceite**
 
-- [ ] Anel do hero e contagem usam apenas o dia atual, em qualquer período.
-- [ ] Trocar Semana/Mês/Ano não altera o anel.
-- [ ] Rótulo do hero fica fixo em "PROGRESSO DE HOJE".
-- [ ] `X/Y` do hero = hábitos concluídos hoje ÷ hábitos ativos.
+- [x] Anel do hero e contagem usam apenas o dia atual, em qualquer período.
+- [x] Trocar Semana/Mês/Ano não altera o anel.
+- [x] Rótulo do hero fica fixo em "PROGRESSO DE HOJE".
+- [x] `X/Y` do hero = hábitos concluídos hoje ÷ hábitos ativos.
 
 ### B6 — Logo com fundo preto
 
@@ -122,10 +122,10 @@ Hoje a Home mostra 3 hábitos e expande (`take(3)` + `_showAll` + `SectionHeader
 
 **Critérios de aceite**
 
-- [ ] O filtro **Todos** mostra todos os hábitos, sem limite de 3.
-- [ ] Cada categoria mostra apenas os seus hábitos.
-- [ ] `SectionHeader` deixa de ter o controle de expandir/recolher.
-- [ ] Nenhum estado `_showAll` restante.
+- [x] O filtro **Todos** mostra todos os hábitos, sem limite de 3.
+- [x] Cada categoria mostra apenas os seus hábitos.
+- [x] `SectionHeader` deixa de ter o controle de expandir/recolher.
+- [x] Nenhum estado `_showAll` restante.
 
 ### F2 — Botão único de recolher/expandir todos os cards
 
@@ -133,11 +133,11 @@ Hoje a Home mostra 3 hábitos e expande (`take(3)` + `_showAll` + `SectionHeader
 
 **Critérios de aceite**
 
-- [ ] Um controle ao lado de "Novo hábito" recolhe todos os cards de uma vez.
-- [ ] O mesmo controle expande todos.
-- [ ] O ícone comunica o estado atual.
-- [ ] Chevron por card é removido.
-- [ ] O estado global é persistido.
+- [x] Um controle ao lado de "Novo hábito" recolhe todos os cards de uma vez.
+- [x] O mesmo controle expande todos.
+- [x] O ícone comunica o estado atual.
+- [x] Chevron por card é removido.
+- [x] O estado global é persistido.
 
 ### F3 — Ajustes: apagar todos os dados e feedback no GitHub
 
@@ -147,11 +147,11 @@ Hoje só existe "Enviar feedback" abrindo um Google Forms.
 
 **Critérios de aceite**
 
-- [ ] Item "Apagar todos os dados" com diálogo de confirmação explícito.
-- [ ] Apagar limpa hábitos, dias, preferências e `last_seen_version`.
-- [ ] Após apagar, a Home volta ao estado vazio de primeira instalação.
-- [ ] Feedback abre o formulário de issues do repositório no navegador.
-- [ ] Se o navegador não abrir, aparece aviso claro.
+- [x] Item "Apagar todos os dados" com diálogo de confirmação explícito.
+- [x] Apagar limpa hábitos, dias, preferências e `last_seen_version`.
+- [x] Após apagar, a Home volta ao estado vazio de primeira instalação.
+- [x] Feedback abre o formulário de issues do repositório no navegador.
+- [x] Se o navegador não abrir, aparece aviso claro.
 
 ### F4 — Primeira instalação sem hábitos
 
@@ -159,9 +159,9 @@ Hoje só existe "Enviar feedback" abrindo um Google Forms.
 
 **Critérios de aceite**
 
-- [ ] Instalação nova abre com lista vazia e chamada para criar o primeiro hábito.
-- [ ] Atualização preserva todos os dados existentes.
-- [ ] Nenhum hábito de exemplo é criado em nenhum caminho.
+- [x] Instalação nova abre com lista vazia e chamada para criar o primeiro hábito.
+- [x] Atualização preserva todos os dados existentes.
+- [x] Nenhum hábito de exemplo é criado em nenhum caminho.
 
 ### F5 — Cabeçalho: "Hoje" e data mais próximos
 
@@ -172,10 +172,10 @@ espaçamento.
 
 **Critérios de aceite**
 
-- [ ] Título "Hoje", sem caixa alta.
-- [ ] Data por extenso logo abaixo ("Quarta, 4 de novembro").
-- [ ] Espaçamento entre os dois reduzido.
-- [ ] Botão "Novo" continua no topo direito.
+- [x] Título "Hoje", sem caixa alta.
+- [x] Data por extenso logo abaixo ("Quarta, 4 de novembro").
+- [x] Espaçamento entre os dois reduzido.
+- [x] Botão "Novo" continua no topo direito.
 
 ### F6 — Frase motivacional fixa durante o dia
 
@@ -185,10 +185,10 @@ Hoje a frase é sorteada a cada abertura (`Random()` + `lastPhrase`).
 
 **Critérios de aceite**
 
-- [ ] A frase é determinística pela data (mesma frase o dia inteiro).
-- [ ] Reabrir o app não muda a frase.
-- [ ] No dia seguinte, a frase pode mudar.
-- [ ] Teste unitário cobre a escolha por data.
+- [x] A frase é determinística pela data (mesma frase o dia inteiro).
+- [x] Reabrir o app não muda a frase.
+- [x] No dia seguinte, a frase pode mudar.
+- [x] Teste unitário cobre a escolha por data.
 
 ### F7 — Dock com lente de vidro líquido
 
@@ -199,12 +199,12 @@ Hoje o dock é estático (`lib/shared/widgets/glass_dock.dart`) com uma bolinha 
 
 **Critérios de aceite**
 
-- [ ] Bolinha branca removida.
-- [ ] Lente de vidro sobre a aba ativa.
-- [ ] A lente só se move ao ser arrastada (arrastar a tela não move).
-- [ ] Ao soltar, encaixa na aba mais próxima com animação.
-- [ ] Toque simples na aba continua funcionando.
-- [ ] Prévia visual aprovada antes do código (etapa 5).
+- [x] Bolinha branca removida.
+- [x] Lente de vidro sobre a aba ativa.
+- [x] A lente só se move ao ser arrastada (arrastar a tela não move).
+- [x] Ao soltar, encaixa na aba mais próxima com animação.
+- [x] Toque simples na aba continua funcionando.
+- [x] Prévia visual aprovada antes do código (etapa 5).
 
 ### F8 — Tela "O que há de novo"
 
@@ -212,12 +212,12 @@ Hoje o dock é estático (`lib/shared/widgets/glass_dock.dart`) com uma bolinha 
 
 **Critérios de aceite**
 
-- [ ] Aparece uma vez a cada versão nova.
-- [ ] Nunca aparece na primeira instalação.
-- [ ] Compara a versão atual com `last_seen_version`.
-- [ ] Conteúdo vem de um arquivo único com versão, data e três blocos: Novidades, Melhorias, Bugs corrigidos.
-- [ ] "Continuar" fecha e salva a versão vista.
-- [ ] Prévia visual aprovada antes do código (etapa 5).
+- [x] Aparece uma vez a cada versão nova.
+- [x] Nunca aparece na primeira instalação.
+- [x] Compara a versão atual com `last_seen_version`.
+- [x] Conteúdo vem de um arquivo único com versão, data e três blocos: Novidades, Melhorias, Bugs corrigidos.
+- [x] "Continuar" fecha e salva a versão vista.
+- [x] Prévia visual aprovada antes do código (etapa 5).
 
 ---
 
@@ -256,9 +256,9 @@ padrão.
 
 **Critérios de aceite**
 
-- [ ] Arquivos da Inter em `assets/fonts/` e declarados no `pubspec.yaml`.
-- [ ] `google_fonts` removido das dependências.
-- [ ] Tipografia idêntica à atual com o app em modo avião.
+- [x] Arquivos da Inter em `assets/fonts/` e declarados no `pubspec.yaml`.
+- [x] `google_fonts` removido das dependências.
+- [x] Tipografia idêntica à atual com o app em modo avião.
 
 ### V5 — Escala de texto e acessibilidade
 
@@ -266,9 +266,9 @@ padrão.
 
 **Critérios de aceite**
 
-- [ ] Home em 360dp com escala de texto 1.3, sem overflow.
-- [ ] `Semantics` presente em check, chips, dock e botões.
-- [ ] Teste de widget com `textScaler` 1.3.
+- [x] Home em 360dp com escala de texto 1.3, sem overflow.
+- [x] `Semantics` presente em check, chips, dock e botões.
+- [x] Teste de widget com `textScaler` 1.3.
 
 ### V6 — Checklist de regressão manual
 
@@ -276,8 +276,8 @@ padrão.
 
 **Critérios de aceite**
 
-- [ ] Documento em `docs/regressao.md` com o roteiro do tester.
-- [ ] Cobrir: primeira instalação, criar/editar hábito, check, trocar período, apagar dados, dock, "O que há de novo", modo avião.
+- [x] Documento em `docs/regressao.md` com o roteiro do tester.
+- [x] Cobrir: primeira instalação, criar/editar hábito, check, trocar período, apagar dados, dock, "O que há de novo", modo avião.
 
 ---
 

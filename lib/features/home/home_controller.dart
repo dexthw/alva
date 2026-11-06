@@ -120,6 +120,22 @@ class HomeController extends ChangeNotifier {
     _scheduleSave();
   }
 
+  /// Apaga hábitos, histórico e preferências e volta ao estado de primeira
+  /// instalação, sem recriar dados de exemplo.
+  Future<void> clearAll() async {
+    _saveTimer?.cancel();
+    await _repository.clear();
+    _habits = <Habit>[];
+    _selectedCategory = 0;
+    _period = Period.week;
+    _phrase = motivationPhraseFor(DateTime.now());
+    _cardsCollapsed = false;
+    _nextId = 1;
+    _status = HabitStorageStatus.empty;
+    _bursts.clear();
+    notifyListeners();
+  }
+
   void _scheduleSave() {
     if (!_loaded) {
       return;

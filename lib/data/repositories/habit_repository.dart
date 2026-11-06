@@ -138,6 +138,16 @@ class HabitRepository {
         habit.streak == 0;
   }
 
+  /// Remove tudo o que este repositório guarda.
+  Future<void> clear() async {
+    try {
+      final SharedPreferences prefs = await _instance;
+      await prefs.remove(storageKey);
+    } catch (_) {
+      // Falha de escrita não deve quebrar a interação.
+    }
+  }
+
   Future<void> save(HabitState state) async {
     try {
       final SharedPreferences prefs = await _instance;

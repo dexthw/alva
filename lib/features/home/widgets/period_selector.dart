@@ -65,13 +65,13 @@ class PeriodSelector extends StatelessWidget {
                             const Duration(milliseconds: 220),
                           ),
                           curve: Curves.easeOut,
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: i == selectedIndex
-                                ? AppColors.textPrimary
-                                : AppColors.textSecondary,
-                          ),
+                          style: DefaultTextStyle.of(context).style.copyWith(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: i == selectedIndex
+                                    ? AppColors.textPrimary
+                                    : AppColors.textSecondary,
+                              ),
                           child: Text(options[i].label),
                         ),
                       ),
