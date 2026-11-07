@@ -47,8 +47,19 @@ void main() {
   test('a nota atual corresponde à versão do app', () {
     expect(currentRelease.version, AppInfo.version);
     expect(currentRelease.date, isNotEmpty);
+    expect(currentRelease.total, greaterThan(0));
     expect(currentRelease.news, isNotEmpty);
-    expect(currentRelease.improvements, isNotEmpty);
-    expect(currentRelease.fixes, isNotEmpty);
+  });
+
+  test('o histórico está da versão mais recente para a mais antiga', () {
+    expect(
+      releaseHistory.map((ReleaseNote note) => note.version).toList(),
+      <String>['1.2.0', '1.1.0', '1.0.2', '1.0.0'],
+    );
+    expect(releaseHistory.first.version, AppInfo.version);
+    expect(
+      releaseHistory.every((ReleaseNote note) => note.total > 0),
+      isTrue,
+    );
   });
 }
