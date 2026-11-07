@@ -7,9 +7,8 @@ class AppInfo {
 
   static const String version = '1.1.0';
 
-  /// Troque pelo repositório oficial quando o remote for criado; os formulários
-  /// em `.github/ISSUE_TEMPLATE/` já estão prontos para ele.
-  static const String repositoryUrl = 'https://github.com/alva-app/alva';
+  /// Repositório oficial do projeto.
+  static const String repositoryUrl = 'https://github.com/dexthw/alva';
 
   static Uri get feedbackUrl =>
       Uri.parse('$repositoryUrl/issues/new?template=feedback.yml');
