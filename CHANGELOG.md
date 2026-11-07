@@ -5,6 +5,50 @@ Todas as mudanças relevantes deste projeto são documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o
 versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.1.0] - 2026-11-05
+
+### Added
+
+- Tela "O que há de novo" exibida uma vez por versão, com versionamento em `alva.last_seen_version`; nunca abre na primeira instalação.
+- "Apagar todos os dados" em Ajustes e na tela de novidades, com diálogo de confirmação que informa quantos hábitos serão removidos.
+- Feedback passa a abrir o formulário de issues do repositório no navegador, com aviso quando o navegador não abre.
+- Fonte Inter empacotada em `assets/fonts/Inter.ttf`; `google_fonts` removido, então a tipografia funciona em modo avião.
+- Recolhimento global dos cards ao lado de "Novo", persistido no storage.
+- Frase do dia determinística pela data (mesma durante todo o dia).
+- `docs/regressao.md` com o roteiro manual de regressão.
+- Testes de apagar dados, escala de texto 1.3, regra das novidades e do dock.
+
+### Changed
+
+- Anel de progresso circular, sem divisões, com porcentagem no centro, cápsula rosa e brilho pulsante de ~2,2s.
+- Dock com lente de vidro vazada, arrastável e com encaixe por mola; borda externa removida.
+- Cabeçalho com "Hoje" e a data logo abaixo, espaçamento curto.
+- Lista de hábitos mostra todos os itens do filtro, sem limite de três.
+- Percentual do card e anel usam apenas o dia atual em qualquer período.
+- Chips e seletor de período herdam a fonte do tema.
+- Versão do app atualizada para `1.1.0+3`.
+- Seletor de período sem as divisórias verticais entre Semana, Mês e Ano.
+- Cards e blocos esmaecem e reduzem levemente a escala ao sair pelo topo da rolagem, de forma proporcional e reversível.
+- Dock esconde os rótulos ao descer a página e os traz de volta ao subir, deixando só os ícones.
+- Lente do dock menor em repouso, cresce com halo ao ser segurada ou arrastada e volta ao repouso com mola elástica; os ícones não mudam de tamanho.
+- Recolher e expandir os dias com escalonamento de 24 ms entre os dias e 400 ms no total, puxando os dias para dentro e empurrando para fora.
+
+### Fixed
+
+- Brilho da chama que zerava durante a explosão ao concluir o hábito.
+- Hábitos fictícios criados na primeira instalação e com storage corrompido.
+- Progresso contando dias anteriores ao invés de apenas hoje.
+- Cards podendo estourar layout com escala de texto 1.3 em 360dp.
+- Marcadores das listas da tela de novidades apareciam amarelos: o caractere "•" caía na fonte de emoji do sistema. Agora o marcador é desenhado, sem depender de glifo.
+- Contraste dos textos "Filtros avançados em breve." e "Apagar dados" abaixo do mínimo WCAG AA.
+
+### Removed
+
+- "Ver todos"/"Ver menos" e o estado `_showAll`.
+- Chevron por card e o campo `collapsed` do hábito.
+- Chip de porcentagem do card.
+- Dependência `google_fonts`.
+
 ## [1.0.2] - 2026-11-03
 
 ### Added

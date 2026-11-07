@@ -20,12 +20,23 @@ android/.kotlin/
 android/key.properties
 *.jks
 *.keystore
+keystore/
+
+# Segredos e configuração local
+.env
+.env.*
+*.env
+local.properties
 
 # Artefatos de entrega
+# Os APKs ficam anexados aos GitHub Releases, nunca no histórico do Git.
 *.apk
 *.aab
+dist/
 
 # Sistema / temporários
 .DS_Store
+Thumbs.db
 .tmp-preview/
 .cloud-attachments/
+*.log
