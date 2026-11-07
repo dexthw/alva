@@ -6,6 +6,7 @@ tem seus dias, sua sequência e um progresso de hoje, sem conta, sem nuvem e sem
 cadastro. Todos os dados ficam no aparelho.
 
 **Versão atual:** `1.1.0`
+**Repositório:** <https://github.com/dexthw/alva>
 
 ---
 
