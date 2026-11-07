@@ -27,6 +27,11 @@ versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 - Percentual do card e anel usam apenas o dia atual em qualquer período.
 - Chips e seletor de período herdam a fonte do tema.
 - Versão do app atualizada para `1.1.0+3`.
+- Seletor de período sem as divisórias verticais entre Semana, Mês e Ano.
+- Cards e blocos esmaecem e reduzem levemente a escala ao sair pelo topo da rolagem, de forma proporcional e reversível.
+- Dock esconde os rótulos ao descer a página e os traz de volta ao subir, deixando só os ícones.
+- Lente do dock menor em repouso, cresce com halo ao ser segurada ou arrastada e volta ao repouso com mola elástica; os ícones não mudam de tamanho.
+- Recolher e expandir os dias com escalonamento de 24 ms entre os dias e 400 ms no total, puxando os dias para dentro e empurrando para fora.
 
 ### Fixed
 
@@ -34,6 +39,8 @@ versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 - Hábitos fictícios criados na primeira instalação e com storage corrompido.
 - Progresso contando dias anteriores ao invés de apenas hoje.
 - Cards podendo estourar layout com escala de texto 1.3 em 360dp.
+- Marcadores das listas da tela de novidades apareciam amarelos: o caractere "•" caía na fonte de emoji do sistema. Agora o marcador é desenhado, sem depender de glifo.
+- Contraste dos textos "Filtros avançados em breve." e "Apagar dados" abaixo do mínimo WCAG AA.
 
 ### Removed
 

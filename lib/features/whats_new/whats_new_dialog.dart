@@ -42,11 +42,11 @@ class WhatsNewDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+        padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 20),
         child: ConstrainedBox(
           constraints: BoxConstraints(
             maxWidth: 400,
-            maxHeight: MediaQuery.sizeOf(context).height * 0.86,
+            maxHeight: MediaQuery.sizeOf(context).height * 0.88,
           ),
           child: Container(
             decoration: BoxDecoration(
@@ -69,12 +69,12 @@ class WhatsNewDialog extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(22, 22, 22, 0),
+                  padding: const EdgeInsets.fromLTRB(20, 18, 20, 0),
                   child: Column(
                     children: <Widget>[
                       Container(
-                        width: 58,
-                        height: 58,
+                        width: 52,
+                        height: 52,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           gradient: const LinearGradient(
@@ -90,34 +90,34 @@ class WhatsNewDialog extends StatelessWidget {
                               color: AppColors.ringArcMint.withValues(
                                 alpha: 0.25,
                               ),
-                              blurRadius: 22,
+                              blurRadius: 20,
                               spreadRadius: 2,
                             ),
                           ],
                         ),
                         child: const Icon(
                           Icons.auto_awesome,
-                          size: 26,
+                          size: 24,
                           color: AppColors.background,
                         ),
                       ),
-                      const SizedBox(height: 14),
+                      const SizedBox(height: 10),
                       const Text(
                         'O que há de novo',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
-                          fontSize: 24,
+                          fontSize: 22,
                           fontWeight: FontWeight.w600,
-                          letterSpacing: -0.6,
+                          letterSpacing: -0.5,
                           color: AppColors.textPrimary,
                         ),
                       ),
-                      const SizedBox(height: 8),
+                      const SizedBox(height: 6),
                       Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 5,
+                          horizontal: 11,
+                          vertical: 4,
                         ),
                         decoration: BoxDecoration(
                           color: AppColors.white06,
@@ -129,18 +129,18 @@ class WhatsNewDialog extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                            fontSize: 11.5,
+                            fontSize: 11,
                             color: AppColors.textTertiary,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 12),
                     ],
                   ),
                 ),
                 Flexible(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(horizontal: 22),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: <Widget>[
                         _ReleaseBlock(
@@ -148,13 +148,13 @@ class WhatsNewDialog extends StatelessWidget {
                           title: 'Novidades',
                           items: note.news,
                         ),
-                        const SizedBox(height: 14),
+                        const SizedBox(height: 10),
                         _ReleaseBlock(
                           icon: Icons.trending_up_rounded,
                           title: 'Melhorias',
                           items: note.improvements,
                         ),
-                        const SizedBox(height: 14),
+                        const SizedBox(height: 10),
                         _ReleaseBlock(
                           icon: Icons.build_outlined,
                           title: 'Bugs corrigidos',
@@ -165,21 +165,23 @@ class WhatsNewDialog extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(22, 12, 22, 22),
+                  padding: const EdgeInsets.fromLTRB(20, 8, 20, 16),
                   child: Column(
                     children: <Widget>[
                       TextButton(
                         onPressed: () => _clearData(context),
                         style: TextButton.styleFrom(
                           foregroundColor: AppColors.textSecondary,
-                          minimumSize: const Size(0, 36),
+                          minimumSize: const Size(0, 32),
+                          padding: EdgeInsets.zero,
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         ),
                         child: const Text(
                           'Apagar todos os dados',
-                          style: TextStyle(fontSize: 12.5),
+                          style: TextStyle(fontSize: 12),
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      const SizedBox(height: 8),
                       Material(
                         color: AppColors.accent,
                         shape: const StadiumBorder(),
@@ -187,7 +189,7 @@ class WhatsNewDialog extends StatelessWidget {
                         child: InkWell(
                           onTap: () => _continue(context),
                           child: const SizedBox(
-                            height: 52,
+                            height: 48,
                             width: double.infinity,
                             child: Center(
                               child: Text(
@@ -229,7 +231,7 @@ class _ReleaseBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: AppColors.white06.withValues(alpha: 0.035),
         borderRadius: BorderRadius.circular(18),
@@ -241,13 +243,13 @@ class _ReleaseBlock extends StatelessWidget {
           Row(
             children: <Widget>[
               Container(
-                width: 30,
-                height: 30,
+                width: 28,
+                height: 28,
                 decoration: BoxDecoration(
                   color: AppColors.white08,
                   borderRadius: BorderRadius.circular(9),
                 ),
-                child: Icon(icon, size: 16, color: AppColors.textTertiary),
+                child: Icon(icon, size: 15, color: AppColors.textTertiary),
               ),
               const SizedBox(width: 9),
               Expanded(
@@ -256,7 +258,7 @@ class _ReleaseBlock extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 11.5,
                     letterSpacing: 1,
                     fontWeight: FontWeight.w600,
                     color: AppColors.textTertiary,
@@ -265,17 +267,37 @@ class _ReleaseBlock extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           for (final String item in items)
             Padding(
-              padding: const EdgeInsets.only(bottom: 5),
-              child: Text(
-                '•  $item',
-                style: const TextStyle(
-                  fontSize: 13,
-                  height: 1.35,
-                  color: AppColors.textPrimary,
-                ),
+              padding: const EdgeInsets.only(bottom: 3),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // Marcador desenhado: não depende de glifo nem de fonte de
+                  // emoji do sistema.
+                  Padding(
+                    padding: const EdgeInsets.only(top: 6, right: 8),
+                    child: Container(
+                      width: 3.5,
+                      height: 3.5,
+                      decoration: const BoxDecoration(
+                        color: AppColors.textTertiary,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      item,
+                      style: const TextStyle(
+                        fontSize: 12.5,
+                        height: 1.3,
+                        color: AppColors.textPrimary,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
         ],

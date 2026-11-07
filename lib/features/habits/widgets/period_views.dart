@@ -1,40 +1,160 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/theme/app_colors.dart';
 import '../../../core/utils/animation_utils.dart';
 import '../../../core/utils/date_labels.dart';
 import '../../../data/models/habit.dart';
-import '../../../core/theme/app_colors.dart';
 
-/// Alterna entre os três modos de exibição de dias do card.
-class HabitPeriodView extends StatelessWidget {
-  const HabitPeriodView({super.key, required this.habit, required this.period});
+/// Área de dias do card.
+///
+/// Recolher "puxa os dias para dentro" e expandir "empurra para fora", com
+/// escalonamento de 24 ms entre os dias e 400 ms no total. A altura acompanha a
+/// animação, então o card encolhe junto.
+class HabitPeriodView extends StatefulWidget {
+  const HabitPeriodView({
+    super.key,
+    required this.habit,
+    required this.period,
+    this.collapsed = false,
+  });
 
   final Habit habit;
   final Period period;
+  final bool collapsed;
+
+  @override
+  State<HabitPeriodView> createState() => _HabitPeriodViewState();
+}
+
+class _HabitPeriodViewState extends State<HabitPeriodView>
+    with SingleTickerProviderStateMixin {
+  static const Duration _duration = Duration(milliseconds: 400);
+
+  late final AnimationController _reveal = AnimationController(
+    vsync: this,
+    duration: _duration,
+    value: widget.collapsed ? 0 : 1,
+  );
+
+  @override
+  void didUpdateWidget(covariant HabitPeriodView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.collapsed == widget.collapsed) {
+      return;
+    }
+    final Duration duration = context.motion(_duration);
+    if (widget.collapsed) {
+      _reveal.animateBack(
+        0,
+        duration: duration,
+        curve: Curves.easeInOutCubic,
+      );
+    } else {
+      _reveal.duration = duration;
+      _reveal.forward();
+    }
+  }
+
+  @override
+  void dispose() {
+    _reveal.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: context.motion(const Duration(milliseconds: 220)),
-      switchInCurve: Curves.easeOut,
-      switchOutCurve: Curves.easeIn,
-      layoutBuilder: (Widget? current, List<Widget> previous) => Stack(
-        alignment: Alignment.topCenter,
-        children: <Widget>[...previous, if (current != null) current],
+    if (widget.collapsed && _reveal.isDismissed) {
+      return const SizedBox(width: double.infinity);
+    }
+
+    final Widget content = Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: AnimatedSwitcher(
+        duration: context.motion(const Duration(milliseconds: 220)),
+        switchInCurve: Curves.easeOut,
+        switchOutCurve: Curves.easeIn,
+        layoutBuilder: (Widget? current, List<Widget> previous) => Stack(
+          alignment: Alignment.topCenter,
+          children: <Widget>[...previous, if (current != null) current],
+        ),
+        child: switch (widget.period) {
+          Period.week => WeekRow(
+              key: const ValueKey<String>('week'),
+              habit: widget.habit,
+              reveal: _reveal,
+            ),
+          Period.month => MonthGrid(
+              key: const ValueKey<String>('month'),
+              habit: widget.habit,
+              reveal: _reveal,
+            ),
+          Period.year => YearHeatmap(
+              key: const ValueKey<String>('year'),
+              habit: widget.habit,
+              reveal: _reveal,
+            ),
+        },
       ),
-      child: switch (period) {
-        Period.week => WeekRow(
-            key: const ValueKey<String>('week'),
-            habit: habit,
+    );
+
+    return AnimatedBuilder(
+      animation: _reveal,
+      child: content,
+      builder: (BuildContext context, Widget? child) {
+        final double reveal = Curves.easeOutCubic.transform(_reveal.value);
+        // O frame final da animação não passa pelo build do State, então a
+        // remoção precisa acontecer aqui para os dias saírem da árvore.
+        if (reveal <= 0.001) {
+          return const SizedBox(width: double.infinity);
+        }
+        return ClipRect(
+          child: Align(
+            alignment: Alignment.topCenter,
+            heightFactor: reveal,
+            child: Opacity(opacity: reveal, child: child),
           ),
-        Period.month => MonthGrid(
-            key: const ValueKey<String>('month'),
-            habit: habit,
+        );
+      },
+    );
+  }
+}
+
+/// Revela um dia com atraso proporcional ao índice (24 ms por dia).
+class _DayReveal extends StatelessWidget {
+  const _DayReveal({
+    required this.animation,
+    required this.index,
+    required this.child,
+  });
+
+  final Animation<double> animation;
+  final int index;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!animation.isAnimating && animation.value >= 1) {
+      return child;
+    }
+    final Interval interval = Interval(
+      (index.clamp(0, 9)) * 0.06,
+      1,
+      curve: Curves.easeOutCubic,
+    );
+
+    return AnimatedBuilder(
+      animation: animation,
+      child: child,
+      builder: (BuildContext context, Widget? cached) {
+        final double t = interval.transform(animation.value.clamp(0.0, 1.0));
+        return Opacity(
+          opacity: t,
+          child: Transform.scale(
+            scale: 0.82 + 0.18 * t,
+            alignment: Alignment.center,
+            child: cached,
           ),
-        Period.year => YearHeatmap(
-            key: const ValueKey<String>('year'),
-            habit: habit,
-          ),
+        );
       },
     );
   }
@@ -42,9 +162,10 @@ class HabitPeriodView extends StatelessWidget {
 
 /// Os 7 dias da semana atual.
 class WeekRow extends StatelessWidget {
-  const WeekRow({super.key, required this.habit});
+  const WeekRow({super.key, required this.habit, this.reveal});
 
   final Habit habit;
+  final Animation<double>? reveal;
 
   @override
   Widget build(BuildContext context) {
@@ -61,18 +182,43 @@ class WeekRow extends StatelessWidget {
         for (int i = 0; i < 7; i++) ...<Widget>[
           if (i > 0) const SizedBox(width: 5),
           Expanded(
-            child: WeekDayPill(
-              label: weekdayShortNames[i],
-              day: DateTime(monday.year, monday.month, monday.day + i).day,
-              isToday: i == now.weekday - 1,
-              isCompleted: habit.completedDays.contains(
-                DateTime(monday.year, monday.month, monday.day + i),
+            child: _Revealed(
+              reveal: reveal,
+              index: i,
+              child: WeekDayPill(
+                label: weekdayShortNames[i],
+                day: DateTime(monday.year, monday.month, monday.day + i).day,
+                isToday: i == now.weekday - 1,
+                isCompleted: habit.completedDays.contains(
+                  DateTime(monday.year, monday.month, monday.day + i),
+                ),
               ),
             ),
           ),
         ],
       ],
     );
+  }
+}
+
+class _Revealed extends StatelessWidget {
+  const _Revealed({
+    required this.reveal,
+    required this.index,
+    required this.child,
+  });
+
+  final Animation<double>? reveal;
+  final int index;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final Animation<double>? animation = reveal;
+    if (animation == null) {
+      return child;
+    }
+    return _DayReveal(animation: animation, index: index, child: child);
   }
 }
 
@@ -158,9 +304,10 @@ class WeekDayPill extends StatelessWidget {
 
 /// Grade compacta do mês atual.
 class MonthGrid extends StatelessWidget {
-  const MonthGrid({super.key, required this.habit});
+  const MonthGrid({super.key, required this.habit, this.reveal});
 
   final Habit habit;
+  final Animation<double>? reveal;
 
   @override
   Widget build(BuildContext context) {
@@ -195,13 +342,17 @@ class MonthGrid extends StatelessWidget {
             children: <Widget>[
               for (int column = 0; column < 7; column++)
                 Expanded(
-                  child: _MonthDayCell(
-                    day: row * 7 + column - leading + 1,
-                    daysInMonth: daysInMonth,
-                    year: now.year,
-                    month: now.month,
-                    today: today,
-                    habit: habit,
+                  child: _Revealed(
+                    reveal: reveal,
+                    index: row * 7 + column,
+                    child: _MonthDayCell(
+                      day: row * 7 + column - leading + 1,
+                      daysInMonth: daysInMonth,
+                      year: now.year,
+                      month: now.month,
+                      today: today,
+                      habit: habit,
+                    ),
                   ),
                 ),
             ],
@@ -267,9 +418,10 @@ class _MonthDayCell extends StatelessWidget {
 
 /// Mapa de calor compacto dos 12 meses do ano.
 class YearHeatmap extends StatelessWidget {
-  const YearHeatmap({super.key, required this.habit});
+  const YearHeatmap({super.key, required this.habit, this.reveal});
 
   final Habit habit;
+  final Animation<double>? reveal;
 
   @override
   Widget build(BuildContext context) {
@@ -280,27 +432,31 @@ class YearHeatmap extends StatelessWidget {
       children: <Widget>[
         for (int month = 1; month <= 12; month++)
           Expanded(
-            child: Column(
-              children: <Widget>[
-                Text(
-                  monthInitials[month - 1],
-                  style: TextStyle(
-                    fontSize: 8.5,
-                    height: 1.1,
-                    fontWeight: FontWeight.w500,
-                    color: month == now.month
-                        ? AppColors.textPrimary
-                        : AppColors.textSecondary,
+            child: _Revealed(
+              reveal: reveal,
+              index: month - 1,
+              child: Column(
+                children: <Widget>[
+                  Text(
+                    monthInitials[month - 1],
+                    style: TextStyle(
+                      fontSize: 8.5,
+                      height: 1.1,
+                      fontWeight: FontWeight.w500,
+                      color: month == now.month
+                          ? AppColors.textPrimary
+                          : AppColors.textSecondary,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                _YearMonthCell(
-                  habit: habit,
-                  year: now.year,
-                  month: month,
-                  now: now,
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  _YearMonthCell(
+                    habit: habit,
+                    year: now.year,
+                    month: month,
+                    now: now,
+                  ),
+                ],
+              ),
             ),
           ),
       ],

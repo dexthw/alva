@@ -50,7 +50,7 @@ class PeriodSelector extends StatelessWidget {
           ),
           Row(
             children: <Widget>[
-              for (int i = 0; i < options.length; i++) ...<Widget>[
+              for (int i = 0; i < options.length; i++)
                 Expanded(
                   child: Semantics(
                     button: true,
@@ -78,16 +78,6 @@ class PeriodSelector extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (i < options.length - 1)
-                  const SizedBox(
-                    height: 16,
-                    child: VerticalDivider(
-                      width: 1,
-                      thickness: 1,
-                      color: AppColors.white10,
-                    ),
-                  ),
-              ],
             ],
           ),
         ],

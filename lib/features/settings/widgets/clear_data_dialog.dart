@@ -49,7 +49,7 @@ Future<bool> showClearDataDialog(
           FilledButton(
             onPressed: () => Navigator.of(dialogContext).pop(true),
             style: FilledButton.styleFrom(
-              backgroundColor: AppColors.danger,
+              backgroundColor: AppColors.dangerStrong,
               foregroundColor: Colors.white,
               shape: const StadiumBorder(),
             ),

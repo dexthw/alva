@@ -152,7 +152,7 @@ class _SettingsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Color accentColor =
-        destructive ? AppColors.danger : AppColors.textPrimary;
+        destructive ? AppColors.dangerText : AppColors.textPrimary;
 
     return Semantics(
       button: true,
@@ -183,7 +183,7 @@ class _SettingsTile extends StatelessWidget {
                   child: Icon(
                     icon,
                     size: 18,
-                    color: destructive ? AppColors.danger : accentColor,
+                    color: destructive ? AppColors.dangerText : accentColor,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -197,7 +197,7 @@ class _SettingsTile extends StatelessWidget {
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                           color: destructive
-                              ? AppColors.danger
+                              ? AppColors.dangerText
                               : AppColors.textPrimary,
                         ),
                       ),

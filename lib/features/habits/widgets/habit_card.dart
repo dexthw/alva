@@ -76,16 +76,12 @@ class HabitCard extends StatelessWidget {
               ),
             ],
           ),
-          AnimatedSize(
-            duration: context.motion(const Duration(milliseconds: 240)),
-            curve: Curves.easeOutCubic,
-            alignment: Alignment.topCenter,
-            child: collapsed
-                ? const SizedBox(width: double.infinity)
-                : Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: HabitPeriodView(habit: habit, period: period),
-                  ),
+          // A própria view anima altura e escalonamento dos dias, então
+          // recolher e expandir não precisa de outro AnimatedSize aqui.
+          HabitPeriodView(
+            habit: habit,
+            period: period,
+            collapsed: collapsed,
           ),
         ],
       ),

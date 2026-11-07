@@ -20,6 +20,12 @@ class AppColors {
   static const Color flameDim = Color(0xFF57575E);
   static const Color danger = Color(0xFFE5484D);
 
+  /// Vermelho para texto sobre superfícies escuras (WCAG AA ≥ 4,5:1).
+  static const Color dangerText = Color(0xFFFF6B70);
+
+  /// Fundo de ação destrutiva com texto branco (WCAG AA ≥ 4,5:1).
+  static const Color dangerStrong = Color(0xFFB32628);
+
   // Branco com opacidade fixa: 6%, 8%, 10%, 12%, 15%, 20%, 25%.
   static const Color white06 = Color(0x0FFFFFFF);
   static const Color white08 = Color(0x14FFFFFF);

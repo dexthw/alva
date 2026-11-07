@@ -25,6 +25,9 @@ class _AppShellState extends State<AppShell> {
   final HomeController _home = HomeController();
   final ReleaseRepository _releases = ReleaseRepository();
 
+  /// Rótulos do dock: somem ao descer e voltam ao subir.
+  bool _dockLabels = true;
+
   @override
   void initState() {
     super.initState();
@@ -102,25 +105,54 @@ class _AppShellState extends State<AppShell> {
     await _releases.clear();
   }
 
+  /// Só o scroll externo interessa; atualiza o estado apenas quando a
+  /// visibilidade dos rótulos muda, evitando rebuild por frame.
+  bool _onScroll(ScrollNotification notification) {
+    if (notification.depth != 0) {
+      return false;
+    }
+    final double pixels = notification.metrics.pixels;
+    bool? visible;
+    if (pixels <= 16) {
+      visible = true;
+    } else if (notification is ScrollUpdateNotification) {
+      final double? delta = notification.scrollDelta;
+      if (delta != null && delta > 0) {
+        visible = false;
+      } else if (delta != null && delta < 0) {
+        visible = true;
+      }
+    }
+
+    final bool? next = visible;
+    if (next != null && next != _dockLabels) {
+      setState(() => _dockLabels = next);
+    }
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(
         children: <Widget>[
-          ListenableBuilder(
-            listenable: _home,
-            builder: (BuildContext context, Widget? child) {
-              return IndexedStack(
-                index: _index,
-                children: <Widget>[
-                  HomePage(controller: _home),
-                  SettingsPage(
-                    habitCount: _home.totalHabits,
-                    onClearData: _clearData,
-                  ),
-                ],
-              );
-            },
+          NotificationListener<ScrollNotification>(
+            onNotification: _onScroll,
+            child: ListenableBuilder(
+              listenable: _home,
+              builder: (BuildContext context, Widget? child) {
+                return IndexedStack(
+                  index: _index,
+                  children: <Widget>[
+                    HomePage(controller: _home),
+                    SettingsPage(
+                      habitCount: _home.totalHabits,
+                      onClearData: _clearData,
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
           Positioned(
             left: 0,
@@ -131,6 +163,7 @@ class _AppShellState extends State<AppShell> {
               minimum: const EdgeInsets.only(bottom: 12),
               child: GlassDock(
                 index: _index,
+                labelsVisible: _dockLabels,
                 onSelect: (int index) {
                   if (index == _index) {
                     return;

@@ -7,6 +7,7 @@ import '../../core/utils/animation_utils.dart';
 import '../../data/models/habit.dart';
 import '../../data/repositories/habit_repository.dart';
 import '../../shared/widgets/dot_grid.dart';
+import '../../shared/widgets/scroll_fade_item.dart';
 import '../../shared/widgets/staggered_entry.dart';
 import '../habits/new_habit_sheet.dart';
 import '../habits/widgets/habit_card.dart';
@@ -56,7 +57,11 @@ class _HomePageState extends State<HomePage> {
       ..hideCurrentSnackBar()
       ..showSnackBar(
         SnackBar(
-          content: const Text('Filtros avançados em breve.'),
+          // Texto explícito para garantir contraste AA sobre o fundo do aviso.
+          content: const Text(
+            'Filtros avançados em breve.',
+            style: TextStyle(fontSize: 13.5, color: AppColors.textPrimary),
+          ),
           behavior: SnackBarBehavior.floating,
           backgroundColor: AppColors.chipSurface,
           margin: const EdgeInsets.fromLTRB(20, 0, 20, 110),
@@ -76,7 +81,7 @@ class _HomePageState extends State<HomePage> {
     final List<Widget> children = <Widget>[];
 
     if (showEmpty) {
-      children.add(_EmptyHabits(message: _emptyMessage));
+      children.add(ScrollFadeItem(child: _EmptyHabits(message: _emptyMessage)));
     } else {
       for (int i = 0; i < items.length; i++) {
         final Habit habit = items[i];
@@ -85,12 +90,14 @@ class _HomePageState extends State<HomePage> {
             padding: EdgeInsets.only(bottom: i == items.length - 1 ? 0 : 12),
             child: StaggeredEntry(
               index: i,
-              child: HabitCard(
-                habit: habit,
-                period: _controller.period,
-                burstToken: _controller.burstFor(habit.id),
-                collapsed: _controller.cardsCollapsed,
-                onToggle: () => _toggleHabit(habit),
+              child: ScrollFadeItem(
+                child: HabitCard(
+                  habit: habit,
+                  period: _controller.period,
+                  burstToken: _controller.burstFor(habit.id),
+                  collapsed: _controller.cardsCollapsed,
+                  onToggle: () => _toggleHabit(habit),
+                ),
               ),
             ),
           ),
@@ -148,11 +155,13 @@ class _HomePageState extends State<HomePage> {
                         0,
                       ),
                       sliver: SliverToBoxAdapter(
-                        child: Header(
-                          phrase: _controller.phrase,
-                          onNewHabit: _openNewHabitSheet,
-                          cardsCollapsed: _controller.cardsCollapsed,
-                          onToggleCards: _controller.toggleCardsCollapsed,
+                        child: ScrollFadeItem(
+                          child: Header(
+                            phrase: _controller.phrase,
+                            onNewHabit: _openNewHabitSheet,
+                            cardsCollapsed: _controller.cardsCollapsed,
+                            onToggleCards: _controller.toggleCardsCollapsed,
+                          ),
                         ),
                       ),
                     ),
@@ -164,7 +173,11 @@ class _HomePageState extends State<HomePage> {
                         0,
                       ),
                       sliver: SliverToBoxAdapter(
-                        child: HeroProgressCard(stats: _controller.todayStats),
+                        child: ScrollFadeItem(
+                          child: HeroProgressCard(
+                            stats: _controller.todayStats,
+                          ),
+                        ),
                       ),
                     ),
                     SliverPadding(
@@ -175,18 +188,22 @@ class _HomePageState extends State<HomePage> {
                         0,
                       ),
                       sliver: SliverToBoxAdapter(
-                        child: PeriodSelector(
-                          value: _controller.period,
-                          onChanged: _controller.selectPeriod,
+                        child: ScrollFadeItem(
+                          child: PeriodSelector(
+                            value: _controller.period,
+                            onChanged: _controller.selectPeriod,
+                          ),
                         ),
                       ),
                     ),
                     const SliverToBoxAdapter(child: SizedBox(height: 20)),
                     SliverToBoxAdapter(
-                      child: CategoryChips(
-                        selectedIndex: _controller.selectedCategory,
-                        onSelected: _controller.selectCategory,
-                        onFilterTap: _showFilterHint,
+                      child: ScrollFadeItem(
+                        child: CategoryChips(
+                          selectedIndex: _controller.selectedCategory,
+                          onSelected: _controller.selectCategory,
+                          onFilterTap: _showFilterHint,
+                        ),
                       ),
                     ),
                     SliverPadding(
@@ -197,7 +214,9 @@ class _HomePageState extends State<HomePage> {
                         0,
                       ),
                       sliver: const SliverToBoxAdapter(
-                        child: SectionHeader(title: 'Meus hábitos'),
+                        child: ScrollFadeItem(
+                          child: SectionHeader(title: 'Meus hábitos'),
+                        ),
                       ),
                     ),
                     if (_controller.status == HabitStorageStatus.corrupted)
@@ -208,7 +227,9 @@ class _HomePageState extends State<HomePage> {
                           AppSpacing.page,
                           0,
                         ),
-                        sliver: SliverToBoxAdapter(child: _StorageWarning()),
+                        sliver: SliverToBoxAdapter(
+                          child: ScrollFadeItem(child: _StorageWarning()),
+                        ),
                       ),
                     SliverPadding(
                       padding: const EdgeInsets.fromLTRB(
