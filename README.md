@@ -153,6 +153,7 @@ release correspondente na aba **[Releases](../../releases)**.
 
 [Release v1.0.0](../../releases/tag/v1.0.0) · APK **não disponível** (o binário
 dessa versão não foi preservado; a primeira versão com APK publicado é a 1.0.2).
+Sem APK, este release também não tem arquivo de checksum.
 
 | Mudança | Por que mudou | Como você percebe | Categoria |
 |---|---|---|---|
