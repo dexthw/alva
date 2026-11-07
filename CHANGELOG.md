@@ -5,6 +5,18 @@ Todas as mudanças relevantes deste projeto são documentadas aqui.
 O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o
 versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
 
+## [1.2.0] - 2026-11-07
+
+### Added
+
+- Tela "O que há de novo" com a lista completa de mudanças por categoria, resumida em dois itens e expandida pelo botão "Ver todas as N mudanças".
+- Histórico das versões anteriores no mesmo card, com cada versão recolhida e expansível.
+- Gradiente de rolagem no rodapé do card enquanto houver conteúdo para rolar.
+
+### Changed
+
+- Versão do app atualizada para `1.2.0+4`.
+
 ## [1.1.0] - 2026-11-05
 
 ### Added

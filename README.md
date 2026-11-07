@@ -5,7 +5,7 @@ serve para quem quer registrar a rotina de forma rápida e visual: cada hábito
 tem seus dias, sua sequência e um progresso de hoje, sem conta, sem nuvem e sem
 cadastro. Todos os dados ficam no aparelho.
 
-**Versão atual:** `1.1.0`
+**Versão atual:** `1.2.0`
 **Repositório:** <https://github.com/dexthw/alva>
 
 ---
@@ -39,7 +39,7 @@ Requisitos: Android 7.0 (API 24) ou superior.
 - **Sequência (streak)** com chama animada e explosão ao concluir o hábito.
 - **Frase motivacional do dia**, determinística pela data.
 - **Recolher todos os cards** de uma vez, com estado persistido.
-- **Tela "O que há de novo"** exibida uma vez a cada versão.
+- **Tela "O que há de novo"** exibida uma vez a cada versão, com a lista completa sob demanda e o histórico das versões anteriores.
 - **Apagar todos os dados** em Ajustes e na própria tela de novidades, com
   confirmação.
 - **Dock flutuante em vidro líquido**, arrastável, com rótulos que somem durante
@@ -53,6 +53,16 @@ Requisitos: Android 7.0 (API 24) ou superior.
 
 As notas abaixo refletem apenas o que foi alterado no código. Cada versão tem um
 release correspondente na aba **[Releases](../../releases)**.
+
+### 1.2.0 — 7 de novembro de 2026
+
+[Release v1.2.0](../../releases/tag/v1.2.0) · APK: `app-habitos-v1.2.0.apk`
+
+| Mudança | Por que mudou | Como você percebe | Categoria |
+|---|---|---|---|
+| Tela de novidades com a lista completa | A versão 1.1.0 mostrava só dois itens por categoria, sem o histórico completo | O botão "Ver todas as N mudanças" expande o card e mostra tudo | Nova funcionalidade |
+| Histórico de versões anteriores | Não havia como consultar o que mudou antes | As versões antigas aparecem recolhidas logo abaixo e abrem ao toque | Nova funcionalidade |
+| Gradiente de rolagem no card | Em telas menores nem todo o conteúdo cabe de uma vez | Um fade no rodapé e o texto "Role para ver tudo" indicam mais conteúdo | Ajuste visual |
 
 ### 1.1.0 — 5 de novembro de 2026
 
