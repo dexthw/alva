@@ -1,106 +1,173 @@
 # Changelog
 
-Todas as mudanças relevantes deste projeto são documentadas aqui.
+Todas as mudanças do Alva, da versão mais recente para a mais antiga. É o mesmo
+texto dos Releases no GitHub e da tela "O que há de novo" do app.
 
-O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o
-versionamento segue [SemVer](https://semver.org/lang/pt-BR/).
+## Alva 1.2.0 ✨ — 7 de novembro de 2026
 
-## [1.2.0] - 2026-11-07
+[Release v1.2.0](https://github.com/dexthw/alva/releases/tag/v1.2.0)
 
-### Added
+Uma versão feita para você ver tudo o que muda no app, sem precisar procurar. O
+card de novidades ficou completo e o histórico das versões anteriores agora mora
+dentro dele.
 
-- Tela "O que há de novo" com a lista completa de mudanças por categoria, resumida em dois itens e expandida pelo botão "Ver todas as N mudanças".
-- Histórico das versões anteriores no mesmo card, com cada versão recolhida e expansível.
-- Gradiente de rolagem no rodapé do card enquanto houver conteúdo para rolar.
+### ✨ Novidades
 
-### Changed
+- **A tela de novidades agora mostra a lista completa.** O card resume dois itens
+  por categoria e o botão "Ver todas as N mudanças" expande o restante com uma
+  animação suave.
+- **O histórico das versões anteriores está no mesmo card.** A 1.1.0, a 1.0.2 e
+  a 1.0.0 aparecem recolhidas logo abaixo — toque em uma delas para abrir.
 
-- Versão do app atualizada para `1.2.0+4`.
+### 🎨 Visual e animações
 
-## [1.1.0] - 2026-11-05
+- **O rodapé do card avisa quando ainda há o que rolar.** Um fade suave com o
+  texto "Role para ver tudo" aparece só enquanto houver conteúdo abaixo.
 
-### Added
+### 📲 Download
 
-- Tela "O que há de novo" exibida uma vez por versão, com versionamento em `alva.last_seen_version`; nunca abre na primeira instalação.
-- "Apagar todos os dados" em Ajustes e na tela de novidades, com diálogo de confirmação que informa quantos hábitos serão removidos.
-- Feedback passa a abrir o formulário de issues do repositório no navegador, com aviso quando o navegador não abre.
-- Fonte Inter empacotada em `assets/fonts/Inter.ttf`; `google_fonts` removido, então a tipografia funciona em modo avião.
-- Recolhimento global dos cards ao lado de "Novo", persistido no storage.
-- Frase do dia determinística pela data (mesma durante todo o dia).
-- `docs/regressao.md` com o roteiro manual de regressão.
-- Testes de apagar dados, escala de texto 1.3, regra das novidades e do dock.
+APK: `Alva-v1.2.0.apk` · Android 7.0 (API 24) ou superior.
 
-### Changed
+## Alva 1.1.0 🎨 — 5 de novembro de 2026
 
-- Anel de progresso circular, sem divisões, com porcentagem no centro, cápsula rosa e brilho pulsante de ~2,2s.
-- Dock com lente de vidro vazada, arrastável e com encaixe por mola; borda externa removida.
-- Cabeçalho com "Hoje" e a data logo abaixo, espaçamento curto.
-- Lista de hábitos mostra todos os itens do filtro, sem limite de três.
-- Percentual do card e anel usam apenas o dia atual em qualquer período.
-- Chips e seletor de período herdam a fonte do tema.
-- Versão do app atualizada para `1.1.0+3`.
-- Seletor de período sem as divisórias verticais entre Semana, Mês e Ano.
-- Cards e blocos esmaecem e reduzem levemente a escala ao sair pelo topo da rolagem, de forma proporcional e reversível.
-- Dock esconde os rótulos ao descer a página e os traz de volta ao subir, deixando só os ícones.
-- Lente do dock menor em repouso, cresce com halo ao ser segurada ou arrastada e volta ao repouso com mola elástica; os ícones não mudam de tamanho.
-- Recolher e expandir os dias com escalonamento de 24 ms entre os dias e 400 ms no total, puxando os dias para dentro e empurrando para fora.
+[Release v1.1.0](https://github.com/dexthw/alva/releases/tag/v1.1.0)
 
-### Fixed
+A versão que deixou o app mais leve de usar: um anel novo, dock com vida própria
+e uma tela para contar o que mudou. Obrigado por testar e apontar cada detalhe.
 
-- Brilho da chama que zerava durante a explosão ao concluir o hábito.
-- Hábitos fictícios criados na primeira instalação e com storage corrompido.
-- Progresso contando dias anteriores ao invés de apenas hoje.
-- Cards podendo estourar layout com escala de texto 1.3 em 360dp.
-- Marcadores das listas da tela de novidades apareciam amarelos: o caractere "•" caía na fonte de emoji do sistema. Agora o marcador é desenhado, sem depender de glifo.
-- Contraste dos textos "Filtros avançados em breve." e "Apagar dados" abaixo do mínimo WCAG AA.
+### ✨ Novidades
 
-### Removed
+- **A tela "O que há de novo" abre uma vez por versão.** Ela aparece na primeira
+  abertura depois de atualizar e não volta; na primeira instalação, nunca aparece.
+- **"Apagar todos os dados" em Ajustes e na própria tela de novidades.** O
+  diálogo informa quantos hábitos serão removidos antes de confirmar.
+- **O feedback abre direto o formulário de issues.** O link vai para o
+  repositório no navegador e o app avisa se não conseguir abrir.
+- **A fonte Inter agora vem dentro do app.** A tipografia fica igual mesmo em
+  modo avião.
+- **Um toque recolhe ou expande todos os cards.** O botão fica ao lado de
+  "Novo" e o estado continua ao reabrir o app.
+- **A frase do dia fica igual o dia inteiro.** Ela só pode mudar no dia seguinte.
 
-- "Ver todos"/"Ver menos" e o estado `_showAll`.
-- Chevron por card e o campo `collapsed` do hábito.
-- Chip de porcentagem do card.
-- Dependência `google_fonts`.
+### 🧭 Navegação
 
-## [1.0.2] - 2026-11-03
+- **A dock tem uma lente de vidro que acompanha o dedo.** Arraste-a entre Hoje e
+  Ajustes e ela encaixa com uma mola; a borda dupla saiu.
+- **A lente fica menor em repouso e cresce ao segurar ou arrastar.** O halo
+  aparece no toque e os ícones não mudam de tamanho.
+- **Os rótulos do dock somem ao rolar.** Ao descer sobram só os ícones; ao subir,
+  os nomes voltam.
 
-### Added
+### 🎨 Visual e animações
 
-- Persistência local (JSON em `shared_preferences`) em `HabitRepository`, salvando hábitos, dias concluídos, sequência, período, categoria, última frase e o estado recolhido de cada card.
-- Aba Settings com a única opção "Enviar feedback", que abre o Google Forms no navegador via `url_launcher`.
-- Banco de 34 frases motivacionais em pt-BR, sorteio ao abrir o app sem repetir a última e troca com fade.
-- Modos Mês (grade compacta) e Ano (mapa de calor dos 12 meses) funcionais nos cards.
-- Chevron por card para recolher/expandir a área de dias.
-- "Ver todos"/"Ver menos" na Home, expandindo a lista sem tela nova.
-- Animações de entrada escalonada dos cards, contagem dos números e da porcentagem.
-- Chama da sequência com pulso contínuo, brilho discreto e explosão ao concluir o hábito do dia.
-- Ícone adaptativo do app gerado com `flutter_launcher_icons` a partir de `assets/logo.png`.
-- Testes unitários de porcentagem, sequência e persistência, e widget test do anel em 0%, 33%, 66% e 100%.
+- **O anel virou um círculo contínuo, sem divisões.** A porcentagem fica no
+  centro, com cápsula rosa na ponta e brilho pulsante de cerca de 2,2 s.
+- **A rolagem ganhou profundidade.** Cards e blocos esmaecem e encolhem um pouco
+  ao sair pelo topo, de forma proporcional e reversível.
+- **O seletor de período perdeu as divisórias verticais.** Semana, Mês e Ano
+  aparecem separados só pelo espaço e pela pílula de seleção.
+- **Recolher e expandir os dias ficou escalonado.** Os dias são puxados para
+  dentro ao recolher e empurrados para fora ao expandir, em cerca de 400 ms.
+- **Chips e seletor passaram a usar a fonte do tema.** Os controles ficam com a
+  mesma tipografia do resto do app, sem cair na fonte padrão.
+- **O cabeçalho ficou mais curto.** "Hoje" com a data logo abaixo, sem o título
+  ocupando a tela.
+- **Os textos de aviso e a ação de apagar ganharam contraste AA.** Mais fáceis de
+  ler no tema escuro.
 
-### Changed
+### ✅ Hábitos
 
-- Anel de progresso refeito em vidro fosco facetado (12 facetas), com halo, régua, partículas e ponta rosada; camada estática cacheada em `Picture`.
-- Card de progresso reduzido para 144dp, com anel de 112dp e padding menor.
-- Cards de hábito ~13% menores (miniatura 76dp, check 48dp, padding 14dp).
-- Percentual do card e anel do topo passam a refletir o período selecionado (semana, mês ou ano).
-- Seletor de período e filtros com transições animadas.
-- `main.dart` dividido em `theme/`, `models/`, `data/`, `widgets/` e `screens/`.
-- Versão do app atualizada para `1.0.2+2`.
+- **A lista mostra todos os hábitos do filtro.** O limite de três itens e o
+  "Ver todos" saíram.
+- **O progresso conta apenas hoje.** Trocar entre Semana, Mês e Ano não muda mais
+  o anel nem a contagem.
+- **A primeira instalação começa vazia.** Nada de hábitos de exemplo, inclusive
+  quando os dados salvos estão corrompidos.
+- **A chama mantém o brilho ao concluir o hábito.** A explosão não apaga o brilho
+  no pico.
+- **Os cards se ajustam com fonte maior.** Escala de texto 1.3 em tela de 360 dp
+  não corta mais o conteúdo.
+- **O chip de porcentagem saiu do card.** A informação já está no anel e na
+  contagem; o chevron individual também saiu.
 
-### Fixed
+### 🐛 Correções
 
-- Bug visual do anel: sem traços cortados, sem agulha sobreposta em 100% e sem "pulos" entre marcações.
-- Cálculo de porcentagem por hábito com clamp entre 0% e 100% e janela correta por período.
-- Chip verde exibindo `100%` ao concluir o último dia esperado, com animação sutil.
-- Datas passaram a ser calculadas por construtor (`DateTime(y, m, d ± n)`), evitando deslocamento em mudanças de fuso/DST.
+- **Os marcadores das listas deixaram de sair amarelos.** O marcador agora é
+  desenhado pelo app e segue a cor do texto.
 
-### Removed
+### 📲 Download
 
-- Wordmark "Alva" do canto superior esquerdo da Home.
-- Anel antigo com 60 marcações, pontos cardeais e agulha.
-- Nenhuma tela cheia de criação de hábito existia; o bottom sheet simples (nome + categoria) foi mantido.
+APK: `Alva-v1.1.0.apk` · Android 7.0 (API 24) ou superior.
 
-## [1.0.0] - 2026-11-02
+## Alva 1.0.2 🧱 — 3 de novembro de 2026
 
-### Added
+[Release v1.0.2](https://github.com/dexthw/alva/releases/tag/v1.0.2)
 
-- Primeira versão visual da Home: tema escuro, card de progresso, filtros por categoria, cards de hábito, dock em vidro e folha de novo hábito.
+A versão em que o Alva passou a lembrar dos seus hábitos. Também chegaram as
+visões de mês e ano e o primeiro envio de feedback de dentro do app.
+
+### ✨ Novidades
+
+- **Seus hábitos continuam salvos ao fechar o app.** Dias concluídos, sequência,
+  período, categoria e frase ficam guardados no aparelho.
+- **A aba Ajustes ganhou "Enviar feedback".** A opção abre o formulário no
+  navegador.
+- **34 frases motivacionais em português.** A frase é sorteada ao abrir e não
+  repete a última.
+- **Cada hábito agora tem visão de mês e de ano.** Uma grade compacta para o mês
+  e um mapa de calor dos 12 meses.
+- **A Home ganhou "Ver todos" e "Ver menos".** A lista deixa de cortar em três
+  itens, sem abrir outra tela.
+- **A interface ganhou movimento.** Cards entram escalonados, os números contam e
+  a chama pulsa.
+- **O ícone do app passou a ser adaptativo.** Fundo claro e recorte correto no
+  padrão do Android.
+
+### 🎨 Visual e animações
+
+- **O anel foi refeito em vidro fosco facetado.** Ganhou halo, régua, partículas
+  e ponta rosada; o anel antigo de 60 marcações saiu.
+- **O card de progresso ficou menor.** 144 dp, com anel de 112 dp e menos
+  espaçamento interno.
+- **Os cards de hábito ficaram cerca de 13% menores.** Miniatura de 76 dp, check
+  de 48 dp e padding de 14 dp.
+- **Cada card ganhou um chevron para recolher os dias.** Dá para esconder os dias
+  de um hábito sem sair da Home.
+- **O percentual passou a seguir o período selecionado.** Card e anel passaram a
+  mostrar o mesmo recorte.
+- **O seletor e os filtros passaram a animar na troca.** A pílula e as cores
+  mudam com transição em vez de trocar de uma vez.
+- **O nome "Alva" saiu do topo da Home.** O cabeçalho ficou mais limpo, com
+  espaço para o conteúdo.
+
+### 🐛 Correções
+
+- **O anel parou de cortar traços e de sobrepor a agulha em 100%.** Os extremos
+  ficaram limpos em 0%, 33%, 66% e 100%.
+- **A porcentagem por hábito ficou sempre entre 0% e 100%.** Antes o cálculo
+  podia passar do limite.
+- **O chip verde comemora o último dia concluído.** Ele aparece com uma animação
+  sutil em vez de ficar parado.
+- **As datas deixaram de se deslocar com fuso e horário de verão.** Os dias da
+  semana e do mês ficam corretos.
+
+### 📲 Download
+
+APK: `Alva-v1.0.2.apk` · Android 7.0 (API 24) ou superior.
+
+## Alva 1.0.0 🌱 — 2 de novembro de 2026
+
+[Release v1.0.0](https://github.com/dexthw/alva/releases/tag/v1.0.0)
+
+A primeira versão do Alva: a Home que definiu o visual do app. Obrigado a quem
+acompanhou o começo.
+
+### ✨ Novidades
+
+- **A primeira Home completa.** Tema escuro, card de progresso com anel, filtros
+  por categoria, cards de hábito, dock em vidro e a folha de novo hábito.
+
+### 📲 Download
+
+O APK desta versão não foi preservado. A primeira versão com arquivo publicado é
+a `1.0.2`.

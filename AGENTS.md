@@ -19,8 +19,8 @@ Sempre que houver qualquer mudança que gere um novo APK:
    - **Major (`X+1.0.0`):** mudanças grandes que alterem a estrutura do app.
 2. Incrementar também o número de build (`+N`) a cada APK gerado, mesmo que a
    versão visível não mude.
-3. Usar a mesma versão no nome do APK (`app-habitos-vX.Y.Z.apk`), na tag do
-   release e no README.
+3. Usar a mesma versão no nome do APK (`Alva-vX.Y.Z.apk`) e do checksum
+   (`Alva-vX.Y.Z.apk.sha256`), na tag do release e no README.
 4. Nunca reaproveitar um número de versão já publicado.
 
 ## 2. Tela de atualizações (obrigatório a cada versão)
