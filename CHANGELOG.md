@@ -7,14 +7,14 @@ texto dos Releases no GitHub e da tela "O que há de novo" do app.
 
 [Release v1.2.0](https://github.com/dexthw/alva/releases/tag/v1.2.0)
 
-Uma versão feita para você ver tudo o que muda no app, sem precisar procurar. O
-card de novidades ficou completo e o histórico das versões anteriores agora mora
-dentro dele.
+Esta versão é sobre clareza: agora você vê tudo o que mudou no app sem precisar
+procurar. O card de novidades ficou completo e o histórico das versões anteriores
+passou a morar dentro dele. Obrigado por acompanhar cada detalhe.
 
-### ✨ Novidades
+### 🔄 Atualizações do app
 
-- **A tela de novidades agora mostra a lista completa.** O card resume dois itens
-  por categoria e o botão "Ver todas as N mudanças" expande o restante com uma
+- **A tela de novidades agora mostra a lista completa.** O card resumia as
+  mudanças; agora o botão "Ver todas as N mudanças" abre o restante com uma
   animação suave.
 - **O histórico das versões anteriores está no mesmo card.** A 1.1.0, a 1.0.2 e
   a 1.0.0 aparecem recolhidas logo abaixo — toque em uma delas para abrir.
@@ -22,11 +22,18 @@ dentro dele.
 ### 🎨 Visual e animações
 
 - **O rodapé do card avisa quando ainda há o que rolar.** Um fade suave com o
-  texto "Role para ver tudo" aparece só enquanto houver conteúdo abaixo.
+  texto "Role para ver tudo" aparece só enquanto existe conteúdo abaixo.
 
 ### 📲 Download
 
-APK: `Alva-v1.2.0.apk` · Android 7.0 (API 24) ou superior.
+| APK                        | Para                                  |
+| -------------------------- | ------------------------------------- |
+| `Alva-v1.2.0.apk`          | Android 7.0 (API 24) ou superior      |
+| `Alva-v1.2.0.apk.sha256`   | Conferir a integridade do arquivo     |
+
+1. Baixe o APK no celular.
+2. Abra o arquivo e permita instalar de fontes desconhecidas na primeira vez.
+3. Toque em **Instalar**. Instalar por cima mantém hábitos e histórico.
 
 ## Alva 1.1.0 🎨 — 5 de novembro de 2026
 
@@ -97,9 +104,16 @@ e uma tela para contar o que mudou. Obrigado por testar e apontar cada detalhe.
 
 ### 📲 Download
 
-APK: `Alva-v1.1.0.apk` · Android 7.0 (API 24) ou superior.
+| APK                        | Para                                  |
+| -------------------------- | ------------------------------------- |
+| `Alva-v1.1.0.apk`          | Android 7.0 (API 24) ou superior      |
+| `Alva-v1.1.0.apk.sha256`   | Conferir a integridade do arquivo     |
 
-## Alva 1.0.2 🧱 — 3 de novembro de 2026
+1. Baixe o APK no celular.
+2. Abra o arquivo e permita instalar de fontes desconhecidas na primeira vez.
+3. Toque em **Instalar**. Instalar por cima mantém hábitos e histórico.
+
+## Alva 1.0.2 💎 — 3 de novembro de 2026
 
 [Release v1.0.2](https://github.com/dexthw/alva/releases/tag/v1.0.2)
 
@@ -153,9 +167,16 @@ visões de mês e ano e o primeiro envio de feedback de dentro do app.
 
 ### 📲 Download
 
-APK: `Alva-v1.0.2.apk` · Android 7.0 (API 24) ou superior.
+| APK                        | Para                                  |
+| -------------------------- | ------------------------------------- |
+| `Alva-v1.0.2.apk`          | Android 7.0 (API 24) ou superior      |
+| `Alva-v1.0.2.apk.sha256`   | Conferir a integridade do arquivo     |
 
-## Alva 1.0.0 🌱 — 2 de novembro de 2026
+1. Baixe o APK no celular.
+2. Abra o arquivo e permita instalar de fontes desconhecidas na primeira vez.
+3. Toque em **Instalar**. Instalar por cima mantém hábitos e histórico.
+
+## Alva 1.0.0 🎉 — 2 de novembro de 2026
 
 [Release v1.0.0](https://github.com/dexthw/alva/releases/tag/v1.0.0)
 
@@ -170,4 +191,4 @@ acompanhou o começo.
 ### 📲 Download
 
 O APK desta versão não foi preservado. A primeira versão com arquivo publicado é
-a `1.0.2`.
+a `1.0.2` — baixe-a na página de Releases.

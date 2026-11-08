@@ -15,17 +15,17 @@
 </p>
 
 <sub>
-  <a href="#funcionalidades">Funcionalidades</a> ·
-  <a href="#download">Download</a> ·
-  <a href="#privacidade">Privacidade</a> ·
-  <a href="#contribuir-e-contato">Contribuir</a>
+  <a href="#-funcionalidades">Funcionalidades</a> ·
+  <a href="#-download">Download</a> ·
+  <a href="#-privacidade">Privacidade</a> ·
+  <a href="#-contribuir-e-contato">Contribuir</a>
 </sub>
 
 </div>
 
 ---
 
-## Visão geral
+## 📱 Visão geral
 
 O Alva é um app de hábitos para Android, feito em Flutter, com tema escuro, vidro
 líquido e animações fluidas. Cada hábito tem seus dias, sua sequência e o
@@ -35,7 +35,7 @@ Sem conta, sem nuvem e sem anúncios: seus hábitos ficam apenas no aparelho.
 
 ---
 
-## Funcionalidades
+## ✨ Funcionalidades
 
 ### 📊 Acompanhamento do progresso
 
@@ -45,7 +45,7 @@ Sem conta, sem nuvem e sem anúncios: seus hábitos ficam apenas no aparelho.
 - Três modos por hábito: semana, mês e ano, com mapa de calor de 12 meses.
 - Frase motivacional que fica igual durante todo o dia.
 
-### 🎨 Visual e animações
+### 🎨 Visual e personalização
 
 - Tema escuro com Material 3 e superfícies em vidro líquido.
 - Anel com cápsula rosa na ponta e brilho pulsante de cerca de 2,2 s.
@@ -79,29 +79,19 @@ Detalhes de cada funcionalidade em
 
 ---
 
-## Versão atual
-
-A **1.2.0** deixou a tela de novidades completa e trouxe o histórico das versões
-anteriores para dentro do card.
-
-[Baixar a 1.2.0](https://github.com/dexthw/alva/releases/latest) ·
-[O que mudou](docs/releases/v1.2.0.md) · [Changelog](CHANGELOG.md)
-
----
-
-## Download
+## 📲 Download
 
 O Alva é distribuído como APK, fora da Play Store. Todos os arquivos ficam na
 página de **[Releases](https://github.com/dexthw/alva/releases)**.
 
-**Versão atual:** `1.2.0` · **Android 7.0 (API 24) ou superior.**
+**Versão atual:** `1.2.0` · **Requer Android 7.0 (API 24) ou superior.**
 
 | APK                          | Para                                  |
 | ---------------------------- | ------------------------------------- |
 | `Alva-v1.2.0.apk`            | Qualquer Android 7.0 (API 24) ou mais |
 | `Alva-v1.2.0.apk.sha256`     | Conferir a integridade do download    |
 
-### Instalação
+### 📥 Instalação
 
 1. Abra a página de **[Releases](https://github.com/dexthw/alva/releases)** e baixe o `.apk` no celular.
 2. Toque no arquivo baixado. Na primeira vez, o Android pede para permitir
@@ -111,12 +101,13 @@ página de **[Releases](https://github.com/dexthw/alva/releases)**.
 4. Para atualizar, instale o APK novo por cima do anterior: hábitos e histórico
    são preservados.
 
-Passo a passo completo, por versão do Android, em
-[`docs/INSTALACAO.md`](docs/INSTALACAO.md).
+O que mudou nesta versão está em
+[`docs/releases/v1.2.0.md`](docs/releases/v1.2.0.md). Passo a passo por versão do
+Android em [`docs/INSTALACAO.md`](docs/INSTALACAO.md).
 
 ---
 
-## Privacidade
+## 🔒 Privacidade
 
 O Alva não tem conta, não tem nuvem e não tem anúncios. Os hábitos, os dias
 concluídos, a sequência e as preferências ficam no armazenamento local do
@@ -131,7 +122,7 @@ também apaga os dados, sem cópia em nenhum servidor.
 
 ---
 
-## Roadmap
+## 🗺️ Roadmap
 
 - 🧭 **Tela de criação de hábito.** Hoje o hábito nasce em uma folha com nome e
   categoria; a próxima versão quer uma tela dedicada, com recorrência, meta
@@ -143,7 +134,7 @@ Nada de nuvem ou conta de usuário está previsto.
 
 ---
 
-## Contribuir e contato
+## 🤝 Contribuir e contato
 
 Leia o [`CONTRIBUTING.md`](CONTRIBUTING.md) antes de abrir um pull request.
 Bugs e ideias vão pelos formulários de
@@ -158,7 +149,7 @@ O roteiro manual de regressão está em
 
 <div align="center">
 
-## Licença
+## 📄 Licença
 
 MIT — veja [`LICENSE`](LICENSE).
 
