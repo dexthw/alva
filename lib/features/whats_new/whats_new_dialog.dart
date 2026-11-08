@@ -3,29 +3,24 @@ import 'package:flutter/material.dart';
 import '../../core/theme/app_colors.dart';
 import '../../core/utils/animation_utils.dart';
 import '../../data/release_notes.dart';
-import '../settings/widgets/clear_data_dialog.dart';
+import 'release_widgets.dart';
 
 const Color _cardBottom = Color(0xFF0D0D0F);
 
 /// Card de novidades exibido uma vez a cada versão, sobre a Home desfocada.
 ///
-/// A versão atual aparece no topo, resumida em dois itens por categoria. O
-/// botão "Ver todas" expande a lista com animação e o rodapé ganha um gradiente
-/// enquanto houver conteúdo para rolar. As versões anteriores ficam recolhidas
-/// logo abaixo e abrem sob demanda.
+/// Mostra apenas a versão instalada: número, data, blocos e o botão
+/// "Continuar". O histórico completo vive na tela "Atualizações", aberta pelo
+/// item de mesmo nome em Ajustes, e nenhuma ação destrutiva aparece aqui.
 class WhatsNewDialog extends StatefulWidget {
   const WhatsNewDialog({
     super.key,
     required this.note,
-    required this.habitCount,
     required this.onContinue,
-    required this.onClearData,
   });
 
   final ReleaseNote note;
-  final int habitCount;
   final VoidCallback onContinue;
-  final Future<void> Function() onClearData;
 
   @override
   State<WhatsNewDialog> createState() => _WhatsNewDialogState();
@@ -33,33 +28,10 @@ class WhatsNewDialog extends StatefulWidget {
 
 class _WhatsNewDialogState extends State<WhatsNewDialog> {
   bool _expanded = false;
-  final Set<String> _openVersions = <String>{};
-
-  Future<void> _clearData() async {
-    final bool confirmed = await showClearDataDialog(
-      context,
-      habitCount: widget.habitCount,
-    );
-    if (!confirmed || !mounted) {
-      return;
-    }
-    await widget.onClearData();
-    if (mounted) {
-      Navigator.of(context).pop();
-    }
-  }
 
   void _continue() {
     widget.onContinue();
     Navigator.of(context).pop();
-  }
-
-  void _toggleVersion(String version) {
-    setState(() {
-      if (!_openVersions.remove(version)) {
-        _openVersions.add(version);
-      }
-    });
   }
 
   List<Widget> _blocks(ReleaseNote note, {int? limit}) {
@@ -73,22 +45,19 @@ class _WhatsNewDialogState extends State<WhatsNewDialog> {
         blocks.add(const SizedBox(height: 10));
       }
       blocks.add(
-        _ReleaseBlock(icon: icon, title: title, items: items, limit: limit),
+        ReleaseBlock(icon: icon, title: title, items: items, limit: limit),
       );
     }
 
     add('Novidades', Icons.star_outline_rounded, note.news);
     add('Melhorias', Icons.trending_up_rounded, note.improvements);
-    add('Bugs corrigidos', Icons.build_outlined, note.fixes);
+    add('Correções', Icons.build_outlined, note.fixes);
     return blocks;
   }
 
   @override
   Widget build(BuildContext context) {
     final ReleaseNote note = widget.note;
-    final List<ReleaseNote> older = releaseHistory
-        .where((ReleaseNote item) => item.version != note.version)
-        .toList();
 
     return Center(
       child: Padding(
@@ -218,8 +187,9 @@ class _WhatsNewDialogState extends State<WhatsNewDialog> {
                           ),
                           const SizedBox(height: 10),
                           AnimatedSize(
-                            duration: context
-                                .motion(const Duration(milliseconds: 300)),
+                            duration: context.motion(
+                              const Duration(milliseconds: 300),
+                            ),
                             curve: Curves.easeOutCubic,
                             alignment: Alignment.topCenter,
                             child: Column(
@@ -246,29 +216,6 @@ class _WhatsNewDialogState extends State<WhatsNewDialog> {
                               style: const TextStyle(fontSize: 13),
                             ),
                           ),
-                          if (older.isNotEmpty) ...<Widget>[
-                            const SizedBox(height: 18),
-                            const Text(
-                              'VERSÕES ANTERIORES',
-                              style: TextStyle(
-                                fontSize: 11,
-                                letterSpacing: 1,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.textTertiary,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            for (final ReleaseNote old in older)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8),
-                                child: _VersionTile(
-                                  note: old,
-                                  open: _openVersions.contains(old.version),
-                                  onTap: () => _toggleVersion(old.version),
-                                  blocks: _blocks(old),
-                                ),
-                              ),
-                          ],
                           const SizedBox(height: 6),
                         ],
                       ),
@@ -276,46 +223,28 @@ class _WhatsNewDialogState extends State<WhatsNewDialog> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 6, 20, 16),
-                  child: Column(
-                    children: <Widget>[
-                      TextButton(
-                        onPressed: _clearData,
-                        style: TextButton.styleFrom(
-                          foregroundColor: AppColors.textSecondary,
-                          minimumSize: const Size(0, 32),
-                          padding: EdgeInsets.zero,
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        child: const Text(
-                          'Apagar todos os dados',
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      Material(
-                        color: AppColors.accent,
-                        shape: const StadiumBorder(),
-                        clipBehavior: Clip.antiAlias,
-                        child: InkWell(
-                          onTap: _continue,
-                          child: const SizedBox(
-                            height: 48,
-                            width: double.infinity,
-                            child: Center(
-                              child: Text(
-                                'Continuar',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.background,
-                                ),
-                              ),
+                  padding: const EdgeInsets.fromLTRB(20, 12, 20, 16),
+                  child: Material(
+                    color: AppColors.accent,
+                    shape: const StadiumBorder(),
+                    clipBehavior: Clip.antiAlias,
+                    child: InkWell(
+                      onTap: _continue,
+                      child: const SizedBox(
+                        height: 48,
+                        width: double.infinity,
+                        child: Center(
+                          child: Text(
+                            'Continuar',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.background,
                             ),
                           ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ],
@@ -327,8 +256,7 @@ class _WhatsNewDialogState extends State<WhatsNewDialog> {
   }
 }
 
-/// Rolagem do conteúdo com um gradiente no rodapé enquanto houver mais texto,
-/// como na alternativa C.
+/// Rolagem do conteúdo com um gradiente no rodapé enquanto houver mais texto.
 class _FadeScroll extends StatefulWidget {
   const _FadeScroll({required this.child});
 
@@ -409,212 +337,6 @@ class _FadeScrollState extends State<_FadeScroll> {
             ),
           ),
       ],
-    );
-  }
-}
-
-class _VersionTile extends StatelessWidget {
-  const _VersionTile({
-    required this.note,
-    required this.open,
-    required this.onTap,
-    required this.blocks,
-  });
-
-  final ReleaseNote note;
-  final bool open;
-  final VoidCallback onTap;
-  final List<Widget> blocks;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
-      decoration: BoxDecoration(
-        color: AppColors.cardSurface,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.white08),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Semantics(
-            button: true,
-            expanded: open,
-            label: 'Versão ${note.version}',
-            child: InkWell(
-              onTap: onTap,
-              borderRadius: BorderRadius.circular(12),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          'Versão ${note.version}',
-                          style: const TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                            color: AppColors.textPrimary,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          '${note.date}  ·  ${note.total} mudanças',
-                          style: const TextStyle(
-                            fontSize: 11.5,
-                            color: AppColors.textSecondary,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  AnimatedRotation(
-                    turns: open ? 0.5 : 0,
-                    duration: context.motion(const Duration(milliseconds: 220)),
-                    curve: Curves.easeOutCubic,
-                    child: const Icon(
-                      Icons.expand_more_rounded,
-                      size: 18,
-                      color: AppColors.textSecondary,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // O conteúdo só entra na árvore quando a versão está aberta, para
-          // não deixar texto escondido para leitores de tela.
-          AnimatedSize(
-            duration: context.motion(const Duration(milliseconds: 260)),
-            curve: Curves.easeOutCubic,
-            alignment: Alignment.topCenter,
-            child: open
-                ? Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Column(children: blocks),
-                  )
-                : const SizedBox(width: double.infinity),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ReleaseBlock extends StatelessWidget {
-  const _ReleaseBlock({
-    required this.icon,
-    required this.title,
-    required this.items,
-    this.limit,
-  });
-
-  final IconData icon;
-  final String title;
-  final List<String> items;
-
-  /// Quando informado, mostra só os primeiros itens e quantos ficaram de fora.
-  final int? limit;
-
-  @override
-  Widget build(BuildContext context) {
-    final int shown =
-        limit == null || items.length <= limit! ? items.length : limit!;
-    final int rest = items.length - shown;
-
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: AppColors.white06.withValues(alpha: 0.035),
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: AppColors.white06),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            children: <Widget>[
-              Container(
-                width: 28,
-                height: 28,
-                decoration: BoxDecoration(
-                  color: AppColors.white08,
-                  borderRadius: BorderRadius.circular(9),
-                ),
-                child: Icon(icon, size: 15, color: AppColors.textTertiary),
-              ),
-              const SizedBox(width: 9),
-              Expanded(
-                child: Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 11.5,
-                    letterSpacing: 1,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.textTertiary,
-                  ),
-                ),
-              ),
-              Text(
-                '${items.length}',
-                style: const TextStyle(
-                  fontSize: 11,
-                  color: AppColors.textTertiary,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 8),
-          for (int i = 0; i < shown; i++)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 3),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  // Marcador desenhado: não depende de glifo nem de fonte de
-                  // emoji do sistema.
-                  Padding(
-                    padding: const EdgeInsets.only(top: 6, right: 8),
-                    child: Container(
-                      width: 3.5,
-                      height: 3.5,
-                      decoration: const BoxDecoration(
-                        color: AppColors.textTertiary,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      items[i],
-                      style: const TextStyle(
-                        fontSize: 12.5,
-                        height: 1.3,
-                        color: AppColors.textPrimary,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          if (rest > 0)
-            Padding(
-              padding: const EdgeInsets.only(left: 11, top: 1),
-              child: Text(
-                '+ $rest ${rest == 1 ? 'item' : 'itens'}',
-                style: const TextStyle(
-                  fontSize: 11.5,
-                  color: AppColors.textTertiary,
-                ),
-              ),
-            ),
-        ],
-      ),
     );
   }
 }

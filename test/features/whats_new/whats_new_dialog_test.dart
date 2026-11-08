@@ -10,16 +10,11 @@ ReleaseNote _note(String version) {
   );
 }
 
-Widget _app(ReleaseNote note) {
+Widget _app(ReleaseNote note, {VoidCallback? onContinue}) {
   return MaterialApp(
     theme: buildAppTheme(),
     home: Scaffold(
-      body: WhatsNewDialog(
-        note: note,
-        habitCount: 2,
-        onContinue: () {},
-        onClearData: () async {},
-      ),
+      body: WhatsNewDialog(note: note, onContinue: onContinue ?? () {}),
     ),
   );
 }
@@ -29,7 +24,24 @@ void main() {
     TestWidgetsFlutterBinding.ensureInitialized();
   });
 
-  testWidgets('lista atual começa resumida e expande por "Ver todas"', (
+  testWidgets('mostra apenas a versão instalada, sem histórico', (
+    WidgetTester tester,
+  ) async {
+    tester.view.physicalSize = const Size(390, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(_app(currentRelease));
+    await tester.pumpAndSettle();
+
+    expect(find.text('O que há de novo'), findsOneWidget);
+    expect(find.text('Versão ${currentRelease.version}'), findsOneWidget);
+    expect(find.text('VERSÕES ANTERIORES'), findsNothing);
+    expect(find.text('Versão 1.2.0'), findsNothing);
+    expect(find.text('Versão 1.0.2'), findsNothing);
+  });
+
+  testWidgets('lista começa resumida e expande por "Ver todas"', (
     WidgetTester tester,
   ) async {
     tester.view.physicalSize = const Size(390, 900);
@@ -43,37 +55,37 @@ void main() {
     expect(find.text('Ver todas as ${note.total} mudanças'), findsOneWidget);
     expect(find.text(note.news.last), findsNothing);
 
-    await tester
-        .ensureVisible(find.text('Ver todas as ${note.total} mudanças'));
+    final Finder button = find.text('Ver todas as ${note.total} mudanças');
+    await tester.ensureVisible(button);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Ver todas as ${note.total} mudanças'));
+    await tester.tap(button);
     await tester.pumpAndSettle();
 
     expect(find.text('Ver menos'), findsOneWidget);
     expect(find.text(note.news.last), findsOneWidget);
   });
 
-  testWidgets('versões anteriores abrem e fecham', (
+  testWidgets('não oferece ação de apagar dados', (
     WidgetTester tester,
   ) async {
-    tester.view.physicalSize = const Size(390, 900);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.reset);
-
-    final ReleaseNote old = _note('1.0.2');
     await tester.pumpWidget(_app(currentRelease));
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.text('Versão 1.0.2'));
-    await tester.pumpAndSettle();
-    expect(find.text(old.news.first), findsNothing);
+    expect(find.text('Apagar todos os dados'), findsNothing);
+  });
 
-    await tester.tap(find.text('Versão 1.0.2'));
+  testWidgets('continuar chama o callback e fecha o card', (
+    WidgetTester tester,
+  ) async {
+    bool continued = false;
+    await tester.pumpWidget(
+      _app(currentRelease, onContinue: () => continued = true),
+    );
     await tester.pumpAndSettle();
-    expect(find.text(old.news.first), findsOneWidget);
 
-    await tester.tap(find.text('Versão 1.0.2'));
+    await tester.tap(find.text('Continuar'));
     await tester.pumpAndSettle();
-    expect(find.text(old.news.first), findsNothing);
+
+    expect(continued, isTrue);
   });
 }

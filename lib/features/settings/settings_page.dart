@@ -4,6 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../core/app_info.dart';
 import '../../core/theme/app_colors.dart';
 import '../../shared/widgets/dot_grid.dart';
+import '../whats_new/updates_page.dart';
 import 'widgets/clear_data_dialog.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -30,6 +31,12 @@ class SettingsPage extends StatelessWidget {
     if (!opened && context.mounted) {
       _snack(context, 'Não foi possível abrir o navegador.');
     }
+  }
+
+  Future<void> _openUpdates(BuildContext context) async {
+    await Navigator.of(context).push<void>(
+      MaterialPageRoute<void>(builder: (BuildContext _) => const UpdatesPage()),
+    );
   }
 
   Future<void> _clearData(BuildContext context) async {
@@ -102,6 +109,14 @@ class SettingsPage extends StatelessWidget {
                     subtitle: 'Abre o formulário de issues no navegador',
                     trailing: Icons.open_in_new,
                     onTap: () => _openFeedback(context),
+                  ),
+                  const SizedBox(height: 12),
+                  _SettingsTile(
+                    icon: Icons.auto_awesome_outlined,
+                    title: 'Atualizações',
+                    subtitle: 'O que mudou em cada versão do app',
+                    trailing: Icons.chevron_right_rounded,
+                    onTap: () => _openUpdates(context),
                   ),
                   const SizedBox(height: 12),
                   _SettingsTile(

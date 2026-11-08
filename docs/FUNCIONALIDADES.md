@@ -47,10 +47,12 @@ não existe está no fim, em **Em breve**.
   nunca acessa o storage diretamente.
 - **Persistência** de hábitos, dias concluídos, sequência, período, categoria,
   frase do dia e estado de recolhimento.
-- **Apagar todos os dados** em Ajustes e na tela de novidades, com diálogo que
+- **Atualizações** abre o histórico completo de versões, com a versão instalada
+  aberta e as anteriores recolhidas.
+- **Apagar todos os dados** em Ajustes, com diálogo que
   informa quantos hábitos serão removidos.
-- **O que há de novo** aparece uma vez por versão, com a lista completa sob
-  demanda e o histórico das versões anteriores. Nunca aparece na primeira
+- **O que há de novo** aparece uma vez por versão, com a lista completa
+  da versão instalada. Nunca aparece na primeira
   instalação.
 - **Enviar feedback** abre o formulário de issues do repositório no navegador.
 - **Versão do app** no rodapé de Ajustes.

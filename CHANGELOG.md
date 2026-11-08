@@ -3,6 +3,25 @@
 Todas as mudanças do Alva, da versão mais recente para a mais antiga. É o mesmo
 texto dos Releases no GitHub e da tela "O que há de novo" do app.
 
+## Alva 1.2.1 🩹 — 8 de novembro de 2026
+
+[Release v1.2.1](https://github.com/dexthw/alva/releases/tag/v1.2.1)
+
+Uma versão de correções: as atualizações ganharam um lugar fixo no app e a tela que abre sozinha deixou de misturar versões antigas com a que você acabou de instalar. Obrigado por apontar cada detalhe.
+
+### 🧭 Navegação
+
+- **O item "Atualizações" chegou em Ajustes.** Fica entre o feedback e a ação de apagar e abre o histórico de versões; o voltar retorna para Ajustes.
+- **O histórico de versões mora nessa tela.** A versão instalada aparece aberta, com a data e o total de mudanças; as anteriores ficam recolhidas e abrem ao toque.
+
+### 🔄 Atualizações do app
+
+- **A tela "O que há de novo" mostra só a versão instalada.** Continua abrindo uma vez por versão, agora sem listar versões antigas e sem o botão que expandia o histórico.
+
+### 🐛 Correções
+
+- **"Apagar todos os dados" saiu da tela de novidades.** A ação destrutiva ficou apenas em Ajustes, com a confirmação e a contagem de hábitos.
+
 ## Alva 1.2.0 ✨ — 7 de novembro de 2026
 
 [Release v1.2.0](https://github.com/dexthw/alva/releases/tag/v1.2.0)

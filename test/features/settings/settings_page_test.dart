@@ -3,8 +3,10 @@ import 'package:alva/features/settings/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-Widget _app(
-    {required int habitCount, required Future<void> Function() onClear}) {
+Widget _app({
+  required int habitCount,
+  required Future<void> Function() onClear,
+}) {
   return MaterialApp(
     theme: buildAppTheme(),
     home: SettingsPage(habitCount: habitCount, onClearData: onClear),
@@ -56,5 +58,16 @@ void main() {
       find.textContaining('Isto remove 4 hábitos'),
       findsOneWidget,
     );
+  });
+
+  testWidgets('item Atualizações abre o histórico de versões', (
+    WidgetTester tester,
+  ) async {
+    await tester.pumpWidget(_app(habitCount: 0, onClear: () async {}));
+
+    await tester.tap(find.text('Atualizações'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Todas as versões do app.'), findsOneWidget);
   });
 }

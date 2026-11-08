@@ -5,7 +5,7 @@
 class AppInfo {
   const AppInfo._();
 
-  static const String version = '1.2.0';
+  static const String version = '1.2.1';
 
   /// Repositório oficial do projeto.
   static const String repositoryUrl = 'https://github.com/dexthw/alva';

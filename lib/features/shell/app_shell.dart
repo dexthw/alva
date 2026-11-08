@@ -75,9 +75,7 @@ class _AppShellState extends State<AppShell> {
           filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
           child: WhatsNewDialog(
             note: currentRelease,
-            habitCount: _home.totalHabits,
             onContinue: () => unawaited(_releases.markSeen(AppInfo.version)),
-            onClearData: _clearData,
           ),
         );
       },

@@ -23,6 +23,20 @@ class ReleaseNote {
 /// recolhidas, com o mesmo texto do README e das notas do release.
 const List<ReleaseNote> releaseHistory = <ReleaseNote>[
   ReleaseNote(
+    version: '1.2.1',
+    date: '8 de novembro de 2026',
+    news: <String>[
+      'Item Atualizações em Ajustes',
+    ],
+    improvements: <String>[
+      'Tela de novidades mostra só a versão instalada',
+    ],
+    fixes: <String>[
+      'Tela de atualizações agora tem caminho de acesso',
+      'A opção de apagar dados saiu da tela de novidades',
+    ],
+  ),
+  ReleaseNote(
     version: '1.2.0',
     date: '7 de novembro de 2026',
     news: <String>[

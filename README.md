@@ -65,7 +65,8 @@ Sem conta, sem nuvem e sem anúncios: seus hábitos ficam apenas no aparelho.
 
 - Tudo salvo no próprio aparelho, sem conta e sem nuvem.
 - "Apagar todos os dados" em Ajustes, com confirmação e contagem de hábitos.
-- Tela "O que há de novo" uma vez por versão, com o histórico das anteriores.
+- Tela "O que há de novo" uma vez por versão, só com a versão instalada.
+- Item "Atualizações" em Ajustes, com o histórico completo das versões.
 - Feedback abre o formulário de issues deste repositório no navegador.
 
 ### 🔮 Em breve
@@ -84,12 +85,12 @@ Detalhes de cada funcionalidade em
 O Alva é distribuído como APK, fora da Play Store. Todos os arquivos ficam na
 página de **[Releases](https://github.com/dexthw/alva/releases)**.
 
-**Versão atual:** `1.2.0` · **Requer Android 7.0 (API 24) ou superior.**
+**Versão atual:** `1.2.1` · **Requer Android 7.0 (API 24) ou superior.**
 
 | APK                          | Para                                  |
 | ---------------------------- | ------------------------------------- |
-| `Alva-v1.2.0.apk`            | Qualquer Android 7.0 (API 24) ou mais |
-| `Alva-v1.2.0.apk.sha256`     | Conferir a integridade do download    |
+| `Alva-v1.2.1.apk`            | Qualquer Android 7.0 (API 24) ou mais |
+| `Alva-v1.2.1.apk.sha256`     | Conferir a integridade do download    |
 
 ### 📥 Instalação
 
@@ -102,7 +103,7 @@ página de **[Releases](https://github.com/dexthw/alva/releases)**.
    são preservados.
 
 O que mudou nesta versão está em
-[`docs/releases/v1.2.0.md`](docs/releases/v1.2.0.md). Passo a passo por versão do
+[`docs/releases/v1.2.1.md`](docs/releases/v1.2.1.md). Passo a passo por versão do
 Android em [`docs/INSTALACAO.md`](docs/INSTALACAO.md).
 
 ---
